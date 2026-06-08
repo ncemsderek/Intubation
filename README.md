@@ -2,8 +2,8 @@
 
 A single-file web app for North Country EMS / Clark Fire District 13 crews. Built for the high-stress, low-frequency intubation call where you need the right number on the screen, fast.
 
-**Live:** `https://ncemsderek.github.io/[REPO]/`
-**Repo:** `https://github.com/ncemsderek/[REPO]/`
+**Live:** `https://ncemsderek.github.io/Intubation/`
+**Repo:** `https://github.com/ncemsderek/Intubation/`
 **Source:** 2026 Clark County EMS Patient Care Protocols
 
 ---
