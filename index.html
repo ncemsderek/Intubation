@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>NCEMS Intubation Guide v1.6</title>
+<title>NCEMS Intubation Guide v1.7</title>
 <style>
   :root {
     --g-deep: #1C3A1C;
@@ -329,9 +329,122 @@
   .close-meds-btn { flex: 1; padding: 13px; background: #eee; color: var(--text); border: none; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 14px; font-weight: 800; letter-spacing: 2px; cursor: pointer; }
   .empty-meds { text-align: center; padding: 40px 20px; color: var(--text-muted); font-family: 'Courier New', monospace; font-size: 13px; letter-spacing: 1px; }
   .spacer-lg { height: 28px; }
+
+  /* WEIGHT - bold + big */
+  .weight-input { font-weight: 900 !important; }
+
+  /* DISCLAIMER MODAL */
+  .disclaimer-overlay { position: fixed; inset: 0; background: rgba(14, 30, 14, 0.97); z-index: 5000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .disclaimer-content { background: white; border-radius: 14px; max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto; border: 3px solid var(--bad); }
+  .disclaimer-header { background: var(--bad-deep); color: white; padding: 16px 20px; font-family: 'Courier New', monospace; font-size: 18px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; text-align: center; }
+  .disclaimer-body { padding: 22px 24px; font-size: 16px; line-height: 1.55; color: var(--text); }
+  .disclaimer-body p { margin-bottom: 12px; }
+  .disclaimer-body strong { color: var(--bad-deep); }
+  .disclaimer-body ul { list-style: none; padding: 0; margin: 14px 0; }
+  .disclaimer-body li { padding: 8px 0 8px 28px; position: relative; border-bottom: 1px solid #f0f0f0; font-size: 15px; line-height: 1.4; }
+  .disclaimer-body li:last-child { border-bottom: none; }
+  .disclaimer-body li::before { content: '⚠'; position: absolute; left: 4px; top: 8px; color: var(--bad); font-size: 16px; font-weight: 800; }
+  .disclaimer-tagline { font-style: italic; color: var(--text-muted); font-size: 14px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #eee; }
+  .disclaimer-btn { display: block; width: calc(100% - 40px); margin: 0 20px 20px; padding: 18px; background: var(--g-accent); color: white; border: none; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 17px; font-weight: 800; letter-spacing: 2px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .disclaimer-btn:active { background: var(--g-mid); }
+  .disclaimer-date { text-align: center; padding: 0 20px 14px; font-family: 'Courier New', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px; }
+
+  /* DOPE BOX */
+  .dope-box { margin: 12px 16px 0; background: #fff5f5; border: 2px solid var(--bad); border-radius: 10px; padding: 14px; }
+  .dope-title { font-family: 'Courier New', monospace; font-size: 13px; font-weight: 800; letter-spacing: 2.5px; color: var(--bad-deep); text-transform: uppercase; text-align: center; margin-bottom: 10px; }
+  .dope-grid { display: grid; grid-template-columns: 48px 1fr; gap: 6px 10px; align-items: center; }
+  .dope-letter { background: var(--bad-deep); color: white; font-family: 'Courier New', monospace; font-size: 26px; font-weight: 800; width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .dope-text { font-size: 13px; line-height: 1.4; color: var(--text); }
+  .dope-text strong { color: var(--bad-deep); }
+
+  /* ===== iPad / TABLET SIZING ===== */
+  @media (min-width: 720px) {
+    .view-header-title { font-size: 28px; }
+    .meds-log-btn { height: 50px; font-size: 15px; padding: 0 14px 0 12px; }
+    .meds-count { font-size: 16px; padding: 3px 11px; }
+    .meds-icon { font-size: 22px; }
+    .weight-label { font-size: 16px; letter-spacing: 4px; }
+    .weight-unit-btn { padding: 14px; font-size: 18px; }
+    .weight-input { font-size: 56px !important; flex: 0 0 220px; width: 220px; padding: 16px; }
+    .weight-unit-display { font-size: 24px; }
+    .weight-enter-btn { padding: 18px 28px; font-size: 18px; }
+    .preset-btn { padding: 16px 6px; font-size: 18px; }
+    .vs-banner { padding: 20px; }
+    .vs-banner-title { font-size: 24px; letter-spacing: 4px; }
+    .vs-banner-sub { font-size: 14px; }
+    .vs-cell { padding: 24px 14px; }
+    .vs-value { font-size: 32px; }
+    .vs-label { font-size: 13px; letter-spacing: 2px; }
+    .vs-cell.met::after { font-size: 28px; }
+    .timer-inline { padding: 22px; }
+    .timer-label { font-size: 16px; letter-spacing: 4px; }
+    .timer-display { font-size: 110px; }
+    .timer-btn { padding: 18px 38px; font-size: 18px; }
+    .timer-status { font-size: 18px; }
+    .big-card-name { font-size: 22px; letter-spacing: 2px; }
+    .big-card-class { font-size: 12px; }
+    .big-ml { font-size: 96px !important; letter-spacing: -4px; }
+    .big-ml-inline-unit { font-size: 30px !important; }
+    .big-mg { font-size: 22px; margin-top: 10px; }
+    .given-stamp { font-size: 14px; padding: 8px 14px; margin-top: 12px; }
+    .big-card-body { padding: 26px 10px 18px; }
+    .big-card-head { padding: 12px 8px; }
+    .big-card-foot { font-size: 13px; padding: 10px 8px; }
+    .single-big-card .big-ml { font-size: 80px !important; }
+    .single-big-card .big-mg { font-size: 22px; }
+    .post-drug-name { font-size: 22px; }
+    .post-drug-role { font-size: 13px; }
+    .post-ml-huge { font-size: 130px; }
+    .post-ml-unit-inline { font-size: 36px; }
+    .post-mg-line { font-size: 24px; }
+    .post-given-stamp { font-size: 16px; padding: 9px 18px; }
+    .acc-title { font-size: 17px; }
+    .check-text { font-size: 18px; }
+    .lemon-letter { font-size: 42px; }
+    .lemon-word { font-size: 15px; }
+    .lemon-detail, .lemon-detail li { font-size: 16px; }
+    .nav-btn { padding: 24px 28px; }
+    .nav-btn-title { font-size: 24px; }
+    .nav-btn-arrow { font-size: 36px; }
+    .cric-banner-text { font-size: 16px; }
+    .cric-banner-title { font-size: 14px; }
+    .warn-box { font-size: 15px; padding: 14px 16px; }
+    .peds-age-btn { padding: 18px 6px; font-size: 15px; }
+    .peds-summary-age { font-size: 32px; }
+    .peds-stat-value { font-size: 24px; }
+    .peds-stat-label { font-size: 12px; }
+    .peds-stat-sub { font-size: 13px; }
+    .splash-title { font-size: 56px; }
+    .splash-btn { min-height: 110px; }
+    .splash-btn-title { font-size: 40px; }
+    .dope-letter { font-size: 32px; width: 60px; height: 60px; }
+    .dope-text { font-size: 16px; }
+    .dope-title { font-size: 16px; }
+    .dope-grid { grid-template-columns: 60px 1fr; gap: 10px 14px; }
+  }
 </style>
 </head>
 <body>
+
+<!-- DISCLAIMER (shown on first load) -->
+<div id="disclaimer-modal" class="disclaimer-overlay" style="display:none;">
+  <div class="disclaimer-content">
+    <div class="disclaimer-header">⚠ Read Before Use</div>
+    <div class="disclaimer-body">
+      <p><strong>This is a reference tool only.</strong></p>
+      <p>By tapping <strong>I AGREE</strong> you acknowledge:</p>
+      <ul>
+        <li>This guide <strong>does not supersede clinical judgment</strong>.</li>
+        <li>Do <strong>not</strong> work outside your scope of practice.</li>
+        <li>Verify all doses, concentrations, and protocols against your service's current standards before administration.</li>
+        <li>You agree <strong>not to hold the author or NCEMS legally accountable</strong> for any outcomes related to use of this tool.</li>
+      </ul>
+      <p class="disclaimer-tagline">Built by NCEMS for field use. Always confirm with your medical director's protocols.</p>
+    </div>
+    <div class="disclaimer-date">Protocols current as of <strong>2026 Clark County EMS Patient Care Protocols</strong></div>
+    <button class="disclaimer-btn" onclick="acceptDisclaimer()">I AGREE — CONTINUE</button>
+  </div>
+</div>
 <!-- SPLASH -->
 <div id="splash">
   <div class="splash-logo">NCEMS · Clark County</div>
@@ -342,7 +455,7 @@
     <button class="splash-btn peds" onclick="showView('peds')"><div class="splash-btn-title">Peds RSI</div></button>
     <button class="splash-btn post" onclick="showView('post')"><div class="splash-btn-title">Post-Intubation</div></button>
   </div>
-  <div class="splash-version">v1.6</div>
+  <div class="splash-version">v1.7</div>
 </div>
 
 <!-- DSI -->
@@ -498,31 +611,6 @@
             <div class="lemon-body"><div class="lemon-word">3-3-2 Rule</div>
               <div class="lemon-detail">
                 <ul><li>Mouth opening: <strong>3 FB</strong> between incisors</li><li>Chin to hyoid: <strong>3 FB</strong></li><li>Hyoid to thyroid: <strong>2 FB</strong></li></ul>
-                <div class="e-rule-svg">
-                  <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 80 25 Q 50 25 45 70 Q 42 100 50 125 L 60 140 Q 70 158 95 165 L 110 175 L 130 180 L 155 188" stroke="#444" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                    <circle cx="78" cy="75" r="3" fill="#444"/>
-                    <path d="M 45 88 L 35 100 L 45 105" stroke="#444" stroke-width="2" fill="none"/>
-                    <line x1="50" y1="120" x2="65" y2="120" stroke="#444" stroke-width="2"/>
-                    <line x1="78" y1="113" x2="78" y2="128" stroke="#C13E3E" stroke-width="3" stroke-linecap="round"/>
-                    <line x1="73" y1="113" x2="83" y2="113" stroke="#C13E3E" stroke-width="2"/>
-                    <line x1="73" y1="128" x2="83" y2="128" stroke="#C13E3E" stroke-width="2"/>
-                    <circle cx="100" cy="120" r="14" fill="#C13E3E"/>
-                    <text x="100" y="125" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle" font-family="Courier New">3</text>
-                    <text x="125" y="118" font-size="10" fill="#444" font-family="Courier New" font-weight="bold">FB</text>
-                    <text x="125" y="130" font-size="9" fill="#666" font-family="Courier New">incisors</text>
-                    <line x1="70" y1="145" x2="105" y2="158" stroke="#C13E3E" stroke-width="3" stroke-linecap="round"/>
-                    <circle cx="155" cy="155" r="14" fill="#C13E3E"/>
-                    <text x="155" y="160" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle" font-family="Courier New">3</text>
-                    <text x="180" y="153" font-size="10" fill="#444" font-family="Courier New" font-weight="bold">FB</text>
-                    <text x="180" y="165" font-size="9" fill="#666" font-family="Courier New">chin-hyoid</text>
-                    <line x1="100" y1="172" x2="130" y2="186" stroke="#C13E3E" stroke-width="3" stroke-linecap="round"/>
-                    <circle cx="180" cy="183" r="14" fill="#C13E3E"/>
-                    <text x="180" y="188" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle" font-family="Courier New">2</text>
-                    <text x="205" y="181" font-size="10" fill="#444" font-family="Courier New" font-weight="bold">FB</text>
-                    <text x="205" y="193" font-size="9" fill="#666" font-family="Courier New">hyoid-thyroid</text>
-                  </svg>
-                </div>
               </div>
             </div>
           </div>
@@ -573,6 +661,16 @@
     <div class="cric-banner">
       <div class="cric-banner-title">⚠ Failure Path</div>
       <div class="cric-banner-text">Att. 1 fails → change operator · Att. 2 fails → iGel<br>Can't ox/vent → <strong>Cricothyrotomy</strong> (needle jet if peds &lt;12)</div>
+    </div>
+
+    <div class="dope-box">
+      <div class="dope-title">⚠ DOPE — Tube Trouble</div>
+      <div class="dope-grid">
+        <div class="dope-letter">D</div><div class="dope-text"><strong>Displaced:</strong> Check ETCO2 waveform · breath sounds · tube depth at lip</div>
+        <div class="dope-letter">O</div><div class="dope-text"><strong>Obstructed:</strong> Suction · check for kink · mucus plug · bite block</div>
+        <div class="dope-letter">P</div><div class="dope-text"><strong>Pneumothorax:</strong> Auscultate · decompress if tension</div>
+        <div class="dope-letter">E</div><div class="dope-text"><strong>Equipment:</strong> Vent / O2 source / BVM / cuff inflation</div>
+      </div>
     </div>
 
     <div class="spacer-lg"></div>
@@ -677,6 +775,16 @@
     <div class="cric-banner">
       <div class="cric-banner-title">⚠ Failure Path</div>
       <div class="cric-banner-text">SpO2 &lt;88% + can't ox/vent → <strong>Cricothyrotomy</strong><br>Peds &lt;12 → <strong>Needle jet</strong></div>
+    </div>
+
+    <div class="dope-box">
+      <div class="dope-title">⚠ DOPE — Tube Trouble</div>
+      <div class="dope-grid">
+        <div class="dope-letter">D</div><div class="dope-text"><strong>Displaced:</strong> Check ETCO2 waveform · breath sounds · tube depth at lip</div>
+        <div class="dope-letter">O</div><div class="dope-text"><strong>Obstructed:</strong> Suction · check for kink · mucus plug · bite block</div>
+        <div class="dope-letter">P</div><div class="dope-text"><strong>Pneumothorax:</strong> Auscultate · decompress if tension</div>
+        <div class="dope-letter">E</div><div class="dope-text"><strong>Equipment:</strong> Vent / O2 source / BVM / cuff inflation</div>
+      </div>
     </div>
 
     <div class="spacer-lg"></div>
@@ -919,6 +1027,16 @@
       <strong>Head injury:</strong> SBP ≥110 · EtCO2 35
     </div>
 
+    <div class="dope-box">
+      <div class="dope-title">⚠ DOPE — Tube Trouble</div>
+      <div class="dope-grid">
+        <div class="dope-letter">D</div><div class="dope-text"><strong>Displaced:</strong> Check ETCO2 waveform · breath sounds · tube depth at lip</div>
+        <div class="dope-letter">O</div><div class="dope-text"><strong>Obstructed:</strong> Suction · check for kink · mucus plug · bite block</div>
+        <div class="dope-letter">P</div><div class="dope-text"><strong>Pneumothorax:</strong> Auscultate · decompress if tension</div>
+        <div class="dope-letter">E</div><div class="dope-text"><strong>Equipment:</strong> Vent / O2 source / BVM / cuff inflation</div>
+      </div>
+    </div>
+
     <div class="accordion" id="acc-rass" style="margin-top:16px;">
       <div class="acc-header" onclick="toggleAcc('acc-rass')">
         <div class="acc-title"><span class="acc-icon-emoji">📊</span> RASS Scale</div>
@@ -996,8 +1114,6 @@
   }
 
   function giveMed(key, drugName, mlElId, mgElId) {
-    const card = document.getElementById('card-' + key);
-    if (card && card.classList.contains('given')) return;
     const mlEl = document.getElementById(mlElId);
     const mgEl = document.getElementById(mgElId);
     if (!mlEl || !mgEl) return;
@@ -1008,8 +1124,6 @@
   }
 
   function givePostMed(key, drugName, mlElId, mgElId) {
-    const card = document.getElementById('card-' + key);
-    if (card && card.classList.contains('given')) return;
     const mlEl = document.getElementById(mlElId);
     const mgEl = document.getElementById(mgElId);
     if (!mlEl || !mgEl) return;
@@ -1020,8 +1134,6 @@
   }
 
   function giveStaticMed(key, drugName, dose) {
-    const card = document.getElementById('card-' + key);
-    if (card && card.classList.contains('given')) return;
     recordMed(key, drugName, dose, '');
   }
 
@@ -1036,11 +1148,14 @@
   function markCardGiven(key, timeStr) {
     const card = document.getElementById('card-' + key);
     if (card) card.classList.add('given');
+    const count = medsGiven.filter(m => m.key === key).length;
     const stamp = document.getElementById('given-' + key);
     if (stamp) {
       stamp.style.display = 'inline-block';
       const timeEl = document.getElementById('given-' + key + '-time');
-      if (timeEl) timeEl.textContent = timeStr;
+      if (timeEl) {
+        timeEl.textContent = count > 1 ? '×' + count + ' · last ' + timeStr : timeStr;
+      }
     }
   }
 
@@ -1523,6 +1638,15 @@
     const dose = round1(rawDose);
     document.getElementById(mlId).textContent = round1(dose / conc);
     document.getElementById(mgId).textContent = dose + ' ' + unit;
+  }
+
+  // DISCLAIMER
+  function acceptDisclaimer() {
+    try { localStorage.setItem('disclaimerAccepted', '2026.06'); } catch(e) {}
+    document.getElementById('disclaimer-modal').style.display = 'none';
+  }
+  if (localStorage.getItem('disclaimerAccepted') !== '2026.06') {
+    document.getElementById('disclaimer-modal').style.display = 'flex';
   }
 
   // INIT
