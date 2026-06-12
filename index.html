@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>NCEMS Intubation Guide v1.5</title>
+<title>NCEMS Intubation Guide v1.6</title>
 <style>
   :root {
     --g-deep: #1C3A1C;
@@ -27,1010 +27,247 @@
     --surface: #F5FAF5;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Georgia', serif;
-    background: var(--g-deep);
-    color: var(--text);
-    min-height: 100vh;
-    overscroll-behavior: none;
-    -webkit-text-size-adjust: 100%;
-  }
+  body { font-family: 'Georgia', serif; background: var(--g-deep); color: var(--text); min-height: 100vh; overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
 
-  /* ===== SPLASH ===== */
-  #splash {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 32px 20px 40px;
-    background: linear-gradient(175deg, #0e1e0e 0%, #1C3A1C 40%, #2E6B2E 100%);
-    position: relative;
-    overflow: hidden;
-  }
-  /* Logo backdrop - referenced as external file, sits behind buttons */
-  #splash::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('NCEMS_logo_transparent.png');
-    background-repeat: no-repeat;
-    background-position: center 55%;
-    background-size: 340px 340px;
-    opacity: 0.12;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .splash-logo, .splash-title, .splash-cards, .splash-version {
-    position: relative;
-    z-index: 1;
-  }
-  .splash-logo {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--g-accent);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    opacity: 0.85;
-  }
-  .splash-title {
-    font-size: clamp(28px, 7vw, 44px);
-    font-weight: 700;
-    color: var(--white);
-    text-align: center;
-    letter-spacing: 1px;
-    line-height: 1.15;
-    margin-bottom: 36px;
-  }
-  .splash-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    width: 100%;
-    max-width: 460px;
-  }
-  .splash-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 20px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.1s;
-    -webkit-tap-highlight-color: transparent;
-    position: relative;
-    overflow: hidden;
-    min-height: 92px;
-  }
+  /* SPLASH */
+  #splash { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 20px 40px; background: linear-gradient(175deg, #0e1e0e 0%, #1C3A1C 40%, #2E6B2E 100%); position: relative; overflow: hidden; }
+  #splash::before { content: ''; position: absolute; inset: 0; background-image: url('NCEMS_logo_transparent.png'); background-repeat: no-repeat; background-position: center 55%; background-size: 340px 340px; opacity: 0.12; pointer-events: none; z-index: 0; }
+  .splash-logo, .splash-title, .splash-cards, .splash-version { position: relative; z-index: 1; }
+  .splash-logo { font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 4px; color: var(--g-accent); text-transform: uppercase; margin-bottom: 12px; opacity: 0.85; }
+  .splash-title { font-size: clamp(30px, 7vw, 46px); font-weight: 700; color: var(--white); text-align: center; letter-spacing: 1px; line-height: 1.15; margin-bottom: 36px; }
+  .splash-cards { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 460px; }
+  .splash-btn { display: flex; align-items: center; justify-content: center; padding: 30px 20px; border-radius: 12px; border: none; cursor: pointer; transition: transform 0.1s; -webkit-tap-highlight-color: transparent; position: relative; overflow: hidden; min-height: 92px; }
   .splash-btn:active { transform: scale(0.97); }
-  .splash-btn.dsi {
-    background: linear-gradient(135deg, #2E6B2E 0%, #3A8A3A 100%);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-  .splash-btn.crash {
-    background: linear-gradient(135deg, #8B1C1C 0%, #C13E3E 100%);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-  .splash-btn.post {
-    background: linear-gradient(135deg, #1C3A1C 0%, #2E6B2E 100%);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-  .splash-btn.peds {
-    background: linear-gradient(135deg, #1C3A55 0%, #4A7CB0 100%);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-  .splash-btn-title {
-    position: relative;
-    z-index: 1;
-    font-size: clamp(26px, 7vw, 34px);
-    font-weight: 800;
-    color: #fff;
-    text-align: center;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    line-height: 1.1;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-  }
-  .splash-version {
-    margin-top: 28px;
-    font-size: 11px;
-    color: rgba(255,255,255,0.3);
-    font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
-  }
+  .splash-btn.dsi { background: linear-gradient(135deg, #2E6B2E 0%, #3A8A3A 100%); box-shadow: 0 6px 24px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); }
+  .splash-btn.crash { background: linear-gradient(135deg, #8B1C1C 0%, #C13E3E 100%); box-shadow: 0 6px 24px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); }
+  .splash-btn.post { background: linear-gradient(135deg, #1C3A1C 0%, #2E6B2E 100%); box-shadow: 0 6px 24px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); }
+  .splash-btn.peds { background: linear-gradient(135deg, #1C3A55 0%, #4A7CB0 100%); box-shadow: 0 6px 24px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); }
+  .splash-btn-title { position: relative; z-index: 1; font-size: clamp(28px, 7vw, 36px); font-weight: 800; color: #fff; text-align: center; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.1; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+  .splash-version { margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.3); font-family: 'Courier New', monospace; letter-spacing: 2px; }
 
-  /* ===== VIEW SHELL ===== */
+  /* VIEW + HEADER + MEDS LOG BUTTON */
   .view { display: none; min-height: 100vh; flex-direction: column; }
   .view.active { display: flex; }
-  .view-header {
-    background: var(--g-deep);
-    color: white;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  .back-btn {
-    background: rgba(255,255,255,0.1);
-    border: none;
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    font-size: 22px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
+  .view-header { background: var(--g-deep); color: white; padding: 12px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .back-btn { background: rgba(255,255,255,0.1); border: none; color: white; width: 42px; height: 42px; border-radius: 8px; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; }
   .back-btn:active { background: rgba(255,255,255,0.2); }
-  .view-header-text { flex: 1; }
-  .view-header-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: white;
-    line-height: 1.1;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+  .view-header-text { flex: 1; min-width: 0; }
+  .view-header-title { font-size: 20px; font-weight: 800; color: white; line-height: 1.1; letter-spacing: 1px; text-transform: uppercase; }
   .view-header.crash-header { background: var(--bad-deep); }
   .view-header.post-header { background: var(--g-deep); }
   .view-header.peds-header { background: var(--peds-deep); }
+  .meds-log-btn { flex-shrink: 0; background: var(--bad); border: 2px solid #fff; color: white; height: 42px; padding: 0 10px 0 8px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; -webkit-tap-highlight-color: transparent; letter-spacing: 1px; }
+  .meds-log-btn:active { transform: scale(0.95); }
+  .meds-icon { font-size: 18px; }
+  .meds-count { background: white; color: var(--bad); padding: 2px 8px; border-radius: 11px; font-size: 13px; font-weight: 800; min-width: 22px; text-align: center; line-height: 1.1; }
   .view-body { flex: 1; background: var(--surface); padding: 0 0 40px 0; overflow-y: auto; }
   .view-body.peds-body { background: #f4f8fc; }
 
-  /* ===== WEIGHT INPUT ===== */
-  .weight-section {
-    margin: 16px 16px 0;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-  }
-  .weight-label {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  .weight-toggle-row {
-    display: flex;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    margin-bottom: 12px;
-  }
-  .weight-unit-btn {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    background: #f5f5f5;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-    transition: all 0.15s;
-    -webkit-tap-highlight-color: transparent;
-  }
+  /* WEIGHT INPUT */
+  .weight-section { margin: 16px 16px 0; background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .weight-label { font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; text-align: center; font-weight: 700; }
+  .weight-toggle-row { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 12px; }
+  .weight-unit-btn { flex: 1; padding: 11px; border: none; background: #f5f5f5; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
   .weight-unit-btn.active { background: var(--g-deep); color: white; }
-  .weight-input-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .weight-input {
-    flex: 0 0 130px;
-    width: 130px;
-    padding: 12px;
-    font-size: 28px;
-    font-weight: 700;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    text-align: center;
-    font-family: 'Courier New', monospace;
-    color: var(--g-deep);
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  .weight-input::-webkit-outer-spin-button,
-  .weight-input::-webkit-inner-spin-button {
-    -webkit-appearance: none; margin: 0;
-  }
+  .weight-input-row { display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .weight-input { flex: 0 0 130px; width: 130px; padding: 12px; font-size: 30px; font-weight: 700; border: 2px solid var(--border); border-radius: 8px; text-align: center; font-family: 'Courier New', monospace; color: var(--g-deep); outline: none; -webkit-appearance: none; appearance: none; }
+  .weight-input::-webkit-outer-spin-button, .weight-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   .weight-input:focus { border-color: var(--g-accent); }
-  .weight-unit-display {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-muted);
-    font-family: 'Courier New', monospace;
-    min-width: 28px;
-  }
-  .weight-enter-btn {
-    flex: 0 0 auto;
-    padding: 13px 18px;
-    background: var(--g-accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: background 0.15s;
-  }
+  .weight-unit-display { font-size: 17px; font-weight: 700; color: var(--text-muted); font-family: 'Courier New', monospace; min-width: 28px; }
+  .weight-enter-btn { flex: 0 0 auto; padding: 14px 20px; background: var(--g-accent); color: white; border: none; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 14px; font-weight: 800; letter-spacing: 2px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s; }
   .weight-enter-btn:active { background: var(--g-mid); }
-  .weight-presets {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    margin-top: 12px;
-  }
-  .preset-btn {
-    padding: 10px 4px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--g-pale);
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-    color: var(--g-deep);
-    text-align: center;
-    -webkit-tap-highlight-color: transparent;
-    transition: all 0.1s;
-  }
+  .weight-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
+  .preset-btn { padding: 11px 4px; border: 1px solid var(--border); border-radius: 6px; background: var(--g-pale); font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace; color: var(--g-deep); text-align: center; -webkit-tap-highlight-color: transparent; transition: all 0.1s; }
   .preset-btn:active, .preset-btn.selected { background: var(--g-deep); color: white; border-color: var(--g-deep); }
 
-  /* ===== V/S TARGETS + TIMER ===== */
-  .vs-banner {
-    margin: 16px 16px 0;
-    background: linear-gradient(135deg, #1C3A1C 0%, #2E6B2E 100%);
-    border-radius: 12px;
-    padding: 14px;
-  }
-  .vs-banner-title {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: rgba(255,255,255,0.6);
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  .vs-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .vs-cell {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 8px;
-    padding: 12px 8px;
-    text-align: center;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: all 0.15s;
-    position: relative;
-  }
-  .vs-cell:active {
-    background: rgba(255,255,255,0.18);
-    transform: scale(0.98);
-  }
-  .vs-cell.met {
-    background: rgba(125, 216, 125, 0.2);
-    border-color: rgba(125, 216, 125, 0.5);
-  }
-  .vs-cell.met::after {
-    content: '✓';
-    position: absolute;
-    top: 4px;
-    right: 6px;
-    color: #8ee18e;
-    font-weight: 700;
-    font-size: 16px;
-  }
-  .vs-value {
-    font-family: 'Courier New', monospace;
-    font-size: 22px;
-    font-weight: 700;
-    color: #8ee18e;
-    line-height: 1.1;
-  }
-  .vs-label {
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    margin-top: 4px;
-  }
-  .vs-hint {
-    text-align: center;
-    margin-top: 8px;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    color: rgba(255,255,255,0.55);
-    letter-spacing: 1.5px;
-  }
-  .timer-inline {
-    margin: 8px 16px 0;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    text-align: center;
-  }
-  .timer-label {
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-  }
-  .timer-display {
-    font-family: 'Courier New', monospace;
-    font-size: 56px;
-    font-weight: 700;
-    color: var(--g-deep);
-    letter-spacing: 2px;
-    line-height: 1;
-    transition: color 0.3s;
-  }
+  /* TARGET VITAL SIGNS - HIGH CONTRAST BUTTONS */
+  .vs-banner { margin: 16px 16px 0; background: linear-gradient(135deg, #1C3A1C 0%, #2E6B2E 100%); border-radius: 12px; padding: 14px; }
+  .vs-banner.peds-vs { background: linear-gradient(135deg, #1C3A55 0%, #2E5B85 100%); }
+  .vs-banner-title { font-family: 'Courier New', monospace; font-size: 14px; letter-spacing: 3px; color: white; text-transform: uppercase; text-align: center; margin-bottom: 4px; font-weight: 800; }
+  .vs-banner-sub { font-family: 'Courier New', monospace; font-size: 10px; color: rgba(255,255,255,0.7); text-align: center; margin-bottom: 12px; letter-spacing: 1.5px; }
+  .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .vs-cell { background: #4A9E4A; border: 2px solid #7CC97C; border-radius: 10px; padding: 14px 8px; text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.15s; position: relative; }
+  .peds-vs .vs-cell { background: #3A75B0; border-color: #6FA0D0; }
+  .vs-cell:active { transform: scale(0.97); }
+  .vs-cell.met { background: #1a7a1a; border-color: #fff; }
+  .peds-vs .vs-cell.met { background: #14304e; border-color: #fff; }
+  .vs-cell.met::after { content: '✓'; position: absolute; top: 4px; right: 8px; color: #fff; font-weight: 800; font-size: 20px; }
+  .vs-value { font-family: 'Courier New', monospace; font-size: 20px; font-weight: 800; color: #fff; line-height: 1.1; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+  .vs-label { font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.95); margin-top: 5px; font-weight: 600; }
+
+  /* TIMER */
+  .timer-inline { margin: 8px 16px 0; background: white; border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; }
+  .timer-label { font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
+  .timer-display { font-family: 'Courier New', monospace; font-size: 58px; font-weight: 700; color: var(--g-deep); letter-spacing: 2px; line-height: 1; transition: color 0.3s; }
   .timer-display.running { color: var(--g-accent); }
   .timer-display.goals-met { color: #1a7a1a; }
-  .timer-btn-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    justify-content: center;
-  }
-  .timer-btn {
-    padding: 12px 28px;
-    border-radius: 8px;
-    border: none;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
-    -webkit-tap-highlight-color: transparent;
-    transition: opacity 0.15s;
-  }
+  .timer-btn-row { display: flex; gap: 8px; margin-top: 12px; justify-content: center; }
+  .timer-btn { padding: 13px 28px; border-radius: 8px; border: none; font-size: 15px; font-weight: 800; cursor: pointer; font-family: 'Courier New', monospace; letter-spacing: 2px; -webkit-tap-highlight-color: transparent; transition: opacity 0.15s; }
   .timer-btn:active { opacity: 0.8; }
   .timer-btn.start { background: var(--g-accent); color: white; }
   .timer-btn.reset { background: #eee; color: var(--text); }
-  .timer-status {
-    margin-top: 8px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-family: 'Courier New', monospace;
-    min-height: 18px;
-    color: transparent;
-    transition: color 0.3s;
-  }
+  .timer-status { margin-top: 8px; font-size: 14px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; font-family: 'Courier New', monospace; min-height: 18px; color: transparent; transition: color 0.3s; }
   .timer-status.show-go { color: #1a7a1a; }
   .timer-status.show-wait { color: var(--warn); }
 
-  /* ===== BIG-CARD 2-COL DRUG LAYOUT (DSI + CRASH + PEDS) ===== */
-  .big-dose-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin: 16px;
-  }
-  .big-dose-col {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    border-radius: 12px;
-    padding: 8px;
-  }
-  /* Single red border wrapping BOTH Ketamine + Rocuronium */
-  .preferred-col {
-    border: 3px solid var(--bad);
-    background: rgba(193, 62, 62, 0.04);
-  }
-  .alt-col {
-    border: 1px solid transparent;
-  }
-  .pref-col-label {
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 2.5px;
-    color: var(--bad);
-    text-align: center;
-    text-transform: uppercase;
-    padding: 2px 0 4px;
-  }
-  .alt-col-label {
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    text-align: center;
-    text-transform: uppercase;
-    padding: 2px 0 4px;
-  }
-  .big-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  .big-card-head {
-    background: var(--g-deep);
-    color: white;
-    padding: 6px 8px;
-    text-align: center;
-  }
+  /* BIG CARDS */
+  .big-dose-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 16px; }
+  .big-dose-col { display: flex; flex-direction: column; gap: 8px; border-radius: 12px; padding: 8px; }
+  .preferred-col { border: 3px solid var(--bad); background: rgba(193, 62, 62, 0.04); }
+  .alt-col { border: 1px solid transparent; }
+  .pref-col-label { font-family: 'Courier New', monospace; font-size: 11px; font-weight: 800; letter-spacing: 2.5px; color: var(--bad); text-align: center; text-transform: uppercase; padding: 2px 0 4px; }
+  .alt-col-label { font-family: 'Courier New', monospace; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--text-muted); text-align: center; text-transform: uppercase; padding: 2px 0 4px; }
+  .big-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; position: relative; }
+  .big-card:active { transform: scale(0.97); }
+  .big-card.given { background: #e8f5e8; border: 2px solid var(--g-accent); box-shadow: 0 0 0 1px var(--g-accent); }
+  .big-card-head { background: var(--g-deep); color: white; padding: 8px 6px; text-align: center; }
   .big-card-head.dsi-induction { background: var(--g-deep); }
   .big-card-head.dsi-paralytic { background: var(--g-mid); }
   .big-card-head.crash-induction { background: var(--bad-deep); }
   .big-card-head.crash-paralytic { background: #5a1a1a; }
   .big-card-head.peds-induction { background: var(--peds-deep); }
   .big-card-head.peds-paralytic { background: #14304e; }
-  .big-card-name {
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    line-height: 1.1;
-  }
-  .big-card-class {
-    font-family: 'Courier New', monospace;
-    font-size: 8px;
-    letter-spacing: 1.5px;
-    color: rgba(255,255,255,0.65);
-    text-transform: uppercase;
-    margin-top: 2px;
-  }
-  .big-card-body {
-    padding: 18px 6px 12px;
-    text-align: center;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .big-ml {
-    font-family: 'Courier New', monospace;
-    font-size: clamp(48px, 14vw, 64px);
-    font-weight: 700;
-    line-height: 0.95;
-    letter-spacing: -2px;
-    color: var(--g-mid);
-  }
+  .big-card-name { font-family: 'Courier New', monospace; font-size: 15px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.1; width: 100%; }
+  .big-card-class { font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 1.5px; color: rgba(255,255,255,0.75); text-transform: uppercase; margin-top: 3px; font-weight: 600; }
+  .big-card-body { padding: 16px 6px 12px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .big-ml-row { display: flex; align-items: baseline; justify-content: center; gap: 4px; line-height: 1; }
+  .big-ml { font-family: 'Courier New', monospace; font-size: clamp(44px, 13vw, 58px); font-weight: 700; line-height: 0.95; letter-spacing: -2px; color: var(--g-mid); }
   .big-ml.dsi-color { color: var(--g-mid); }
   .big-ml.crash-color { color: var(--bad); }
   .big-ml.peds-color { color: var(--peds-mid); }
-  .big-ml-unit {
-    font-family: 'Courier New', monospace;
-    font-size: 16px;
-    color: var(--text-muted);
-    font-weight: 700;
-    letter-spacing: 3px;
-    margin-top: 4px;
-  }
-  .big-mg {
-    font-family: 'Courier New', monospace;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-    margin-top: 8px;
-    letter-spacing: 0.5px;
-  }
-  .big-max-tag {
-    display: inline-block;
-    background: var(--warn);
-    color: white;
-    font-family: 'Courier New', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    padding: 2px 6px;
-    border-radius: 3px;
-    margin-top: 4px;
-  }
-  .big-card-foot {
-    padding: 7px 6px;
-    background: #fafafa;
-    border-top: 1px solid #eee;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    color: var(--text);
-    text-align: center;
-    letter-spacing: 0.3px;
-    font-weight: 700;
-  }
+  .big-ml-inline-unit { font-family: 'Courier New', monospace; font-size: clamp(16px, 4.5vw, 20px); color: var(--text-muted); font-weight: 700; letter-spacing: 1px; }
+  .big-mg { font-family: 'Courier New', monospace; font-size: 16px; font-weight: 800; color: var(--text); margin-top: 6px; letter-spacing: 0.5px; }
+  .big-max-tag { display: inline-block; background: var(--warn); color: white; font-family: 'Courier New', monospace; font-size: 9px; font-weight: 800; letter-spacing: 1px; padding: 2px 6px; border-radius: 3px; margin-top: 4px; }
+  .given-stamp { margin-top: 8px; background: var(--g-accent); color: white; padding: 5px 10px; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; align-self: center; line-height: 1.2; }
+  .big-card-foot { padding: 7px 6px; background: #fafafa; border-top: 1px solid #eee; font-family: 'Courier New', monospace; font-size: 11px; color: var(--text); text-align: center; letter-spacing: 0.3px; font-weight: 700; }
+  .big-card.given .big-card-foot { background: #d4ecd4; }
+  .single-big-card { margin: 0 16px; background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+  .single-big-card:active { transform: scale(0.98); }
+  .single-big-card.given { background: #e8f5e8; border: 2px solid var(--g-accent); }
+  .single-big-card .big-card-body { flex-direction: row; justify-content: center; align-items: baseline; gap: 14px; padding: 16px 10px; flex-wrap: wrap; }
+  .single-big-card .big-ml { font-size: 54px; }
+  .single-big-card .big-mg { margin-top: 0; font-size: 17px; }
+  .single-big-card .given-stamp { margin-top: 0; }
+  .no-weight-msg { margin: 16px 16px 0; text-align: center; padding: 32px 20px; color: var(--text-muted); font-family: 'Courier New', monospace; font-size: 14px; letter-spacing: 1px; background: white; border: 2px dashed var(--border); border-radius: 10px; }
 
-  /* Full-width Midazolam card for peds (under main grid) */
-  .single-big-card {
-    margin: 0 16px;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .single-big-card .big-card-body {
-    flex-direction: row;
-    justify-content: center;
-    align-items: baseline;
-    gap: 14px;
-    padding: 16px 10px;
-  }
-  .single-big-card .big-ml { font-size: 52px; }
-  .single-big-card .big-mg { margin-top: 0; font-size: 16px; }
-
-  .no-weight-msg {
-    margin: 16px 16px 0;
-    text-align: center;
-    padding: 32px 20px;
-    color: var(--text-muted);
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    letter-spacing: 1px;
-    background: white;
-    border: 2px dashed var(--border);
-    border-radius: 10px;
-  }
-
-  /* ===== ACCORDION ===== */
-  .accordion {
-    margin: 12px 16px 0;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .acc-header {
-    padding: 16px;
-    background: var(--g-deep);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: background 0.15s;
-  }
+  /* ACCORDION */
+  .accordion { margin: 12px 16px 0; background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .acc-header { padding: 16px; background: var(--g-deep); color: white; display: flex; align-items: center; justify-content: space-between; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s; }
   .acc-header:active { background: #0e1e0e; }
-  .acc-title {
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .acc-icon-emoji { font-size: 16px; }
-  .acc-chevron {
-    font-size: 20px;
-    color: rgba(255,255,255,0.6);
-    transition: transform 0.2s;
-  }
+  .acc-title { font-family: 'Courier New', monospace; font-size: 14px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+  .acc-icon-emoji { font-size: 18px; }
+  .acc-chevron { font-size: 22px; color: rgba(255,255,255,0.6); transition: transform 0.2s; }
   .accordion.open .acc-chevron { transform: rotate(180deg); }
-  .acc-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-  }
+  .acc-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
   .accordion.open .acc-content { max-height: 5000px; transition: max-height 0.5s ease-in; }
   .acc-inner { padding: 4px 0 0; }
   .accordion.warn-acc .acc-header { background: var(--warn); }
   .accordion.warn-acc .acc-header:active { background: #946408; }
   .accordion.mid-acc .acc-header { background: var(--g-mid); }
-
-  .check-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 13px 14px;
-    border-bottom: 1px solid #f0f5f0;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: background 0.15s;
-  }
+  .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border-bottom: 1px solid #f0f5f0; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s; }
   .check-item:last-child { border-bottom: none; }
   .check-item:active { background: var(--g-pale); }
   .check-item.checked { background: #f0faf0; }
-  .check-box {
-    width: 26px;
-    height: 26px;
-    border: 2px solid var(--border);
-    border-radius: 6px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1px;
-    background: white;
-  }
+  .check-box { width: 28px; height: 28px; border: 2px solid var(--border); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; background: white; }
   .check-item.checked .check-box { background: var(--g-accent); border-color: var(--g-accent); }
-  .check-box::after {
-    content: '';
-    display: none;
-    width: 6px;
-    height: 10px;
-    border: 2px solid white;
-    border-top: none;
-    border-left: none;
-    transform: rotate(45deg) translateY(-1px);
-  }
+  .check-box::after { content: ''; display: none; width: 7px; height: 12px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) translateY(-1px); }
   .check-item.checked .check-box::after { display: block; }
-  .check-text { flex: 1; font-size: 15px; line-height: 1.4; color: var(--text); padding-top: 2px; }
+  .check-text { flex: 1; font-size: 16px; line-height: 1.4; color: var(--text); padding-top: 2px; }
   .check-text strong { color: var(--g-deep); }
 
-  /* ===== LEMON / MALLAMPATI / E-RULE ===== */
+  /* LEMON / MALLAMPATI */
   .lemon-table { width: 100%; border-collapse: collapse; }
-  .lemon-row {
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    border-bottom: 1px solid #f0f0f0;
-  }
+  .lemon-row { display: grid; grid-template-columns: 56px 1fr; border-bottom: 1px solid #f0f0f0; }
   .lemon-row:last-of-type { border-bottom: none; }
-  .lemon-letter {
-    background: var(--bad-deep);
-    color: white;
-    font-family: 'Courier New', monospace;
-    font-size: 32px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  .lemon-letter { background: var(--bad-deep); color: white; font-family: 'Courier New', monospace; font-size: 34px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
   .lemon-row:nth-child(2) .lemon-letter { background: #a82626; }
   .lemon-row:nth-child(3) .lemon-letter { background: var(--bad); }
   .lemon-row:nth-child(4) .lemon-letter { background: #d04848; }
   .lemon-row:nth-child(5) .lemon-letter { background: #e15555; }
   .lemon-body { padding: 12px 14px; }
-  .lemon-word {
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--bad-deep);
-    margin-bottom: 4px;
-  }
-  .lemon-detail { font-size: 14px; line-height: 1.4; color: var(--text); }
+  .lemon-word { font-family: 'Courier New', monospace; font-size: 13px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--bad-deep); margin-bottom: 4px; }
+  .lemon-detail { font-size: 15px; line-height: 1.4; color: var(--text); }
   .lemon-detail ul { list-style: none; padding-left: 0; margin-top: 4px; }
-  .lemon-detail li {
-    padding: 2px 0 2px 14px;
-    position: relative;
-    font-size: 13px;
-  }
-  .lemon-detail li::before {
-    content: '•';
-    position: absolute;
-    left: 0;
-    color: var(--bad);
-  }
-  .mallampati {
-    padding: 14px;
-    background: #f9f9f9;
-    border-top: 1px solid #eee;
-  }
-  .mallampati-title {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    text-align: center;
-  }
-  .mallampati-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-  .mp-class {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px 4px 6px;
-    text-align: center;
-  }
+  .lemon-detail li { padding: 2px 0 2px 14px; position: relative; font-size: 14px; }
+  .lemon-detail li::before { content: '•'; position: absolute; left: 0; color: var(--bad); }
+  .mallampati { padding: 14px; background: #f9f9f9; border-top: 1px solid #eee; }
+  .mallampati-title { font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; text-align: center; font-weight: 700; }
+  .mallampati-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .mp-class { background: white; border: 1px solid #ddd; border-radius: 6px; padding: 10px 4px 6px; text-align: center; }
   .mp-class svg { display: block; width: 100%; height: auto; max-width: 80px; margin: 0 auto 6px; }
-  .mp-num {
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--bad-deep);
-    margin-bottom: 4px;
-  }
-  .mp-desc { font-size: 9px; color: var(--text-muted); line-height: 1.2; }
-  .e-rule-svg {
-    margin: 12px auto 0;
-    padding: 12px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #eee;
-    max-width: 100%;
-  }
+  .mp-num { font-family: 'Courier New', monospace; font-size: 13px; font-weight: 800; color: var(--bad-deep); margin-bottom: 4px; }
+  .mp-desc { font-size: 10px; color: var(--text-muted); line-height: 1.2; }
+  .e-rule-svg { margin: 12px auto 0; padding: 12px; background: white; border-radius: 8px; border: 1px solid #eee; max-width: 100%; }
   .e-rule-svg svg { display: block; max-width: 280px; width: 100%; height: auto; margin: 0 auto; }
 
-  /* ===== CONSIDERATIONS ===== */
+  /* CONSIDERATIONS */
   .consid-block { padding: 12px 14px; }
-  .consid-title {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--g-deep);
-    margin-bottom: 6px;
-    font-weight: 700;
-  }
+  .consid-title { font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--g-deep); margin-bottom: 6px; font-weight: 800; }
   .consid-title.alt-title { color: var(--warn); margin-top: 12px; }
   .consid-list { list-style: none; }
-  .consid-list li {
-    padding: 4px 0 4px 14px;
-    font-size: 14px;
-    line-height: 1.4;
-    position: relative;
-  }
-  .consid-list li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--g-accent);
-    font-size: 11px;
-    top: 6px;
-  }
+  .consid-list li { padding: 4px 0 4px 14px; font-size: 15px; line-height: 1.4; position: relative; }
+  .consid-list li::before { content: '▸'; position: absolute; left: 0; color: var(--g-accent); font-size: 12px; top: 6px; }
   .consid-title.alt-title + .consid-list li::before { color: var(--warn); }
   .consid-list li strong { color: var(--g-deep); }
 
-  .nav-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: calc(100% - 32px);
-    margin: 16px 16px 0;
-    padding: 18px 20px;
-    background: linear-gradient(135deg, var(--g-deep) 0%, var(--g-mid) 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: transform 0.1s;
-  }
+  /* NAV BUTTON */
+  .nav-btn { display: flex; align-items: center; justify-content: space-between; width: calc(100% - 32px); margin: 16px 16px 0; padding: 20px 22px; background: linear-gradient(135deg, var(--g-deep) 0%, var(--g-mid) 100%); color: white; border: none; border-radius: 12px; cursor: pointer; -webkit-tap-highlight-color: transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.1s; }
+  .nav-btn.peds-nav { background: linear-gradient(135deg, var(--peds-deep) 0%, var(--peds-mid) 100%); }
   .nav-btn:active { transform: scale(0.98); }
-  .nav-btn-title {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .nav-btn-arrow {
-    font-size: 28px;
-    color: rgba(255,255,255,0.5);
-  }
+  .nav-btn-title { font-size: 20px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-btn-arrow { font-size: 30px; color: rgba(255,255,255,0.6); }
 
-  .warn-box {
-    margin: 12px 16px 0;
-    background: #fff8e8;
-    border: 1px solid #f0c060;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 12px;
-    color: #7a5000;
-    font-family: 'Courier New', monospace;
-    line-height: 1.5;
-  }
+  /* WARN + CRIC */
+  .warn-box { margin: 12px 16px 0; background: #fff8e8; border: 1px solid #f0c060; border-radius: 8px; padding: 11px 13px; font-size: 13px; color: #7a5000; font-family: 'Courier New', monospace; line-height: 1.5; }
   .warn-box strong { color: var(--warn); }
-  .cric-banner {
-    margin: 16px 16px 0;
-    background: var(--bad-light);
-    border: 2px solid var(--bad);
-    border-radius: 10px;
-    padding: 12px;
-    text-align: center;
-  }
-  .cric-banner-title {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--bad);
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .cric-banner-text { font-size: 13px; color: #7a0000; line-height: 1.5; }
+  .cric-banner { margin: 16px 16px 0; background: var(--bad-light); border: 2px solid var(--bad); border-radius: 10px; padding: 13px; text-align: center; }
+  .cric-banner-title { font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--bad); font-weight: 800; margin-bottom: 6px; }
+  .cric-banner-text { font-size: 14px; color: #7a0000; line-height: 1.5; }
 
-  /* ===== POST-INTUBATION (unchanged big cards) ===== */
-  .post-drug-card {
-    margin: 16px 16px 0;
-    background: white;
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-  .post-drug-card.preferred {
-    border: 3px solid var(--bad);
-    box-shadow: 0 2px 12px rgba(193, 62, 62, 0.18);
-  }
-  .post-drug-head {
-    background: var(--g-mid);
-    color: white;
-    padding: 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  /* POST-INT CARDS */
+  .post-drug-card { margin: 16px 16px 0; background: white; border: 2px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+  .post-drug-card:active { transform: scale(0.98); }
+  .post-drug-card.given { background: #e8f5e8; border: 3px solid var(--g-accent); }
+  .post-drug-card.preferred { border: 3px solid var(--bad); box-shadow: 0 2px 12px rgba(193, 62, 62, 0.18); }
+  .post-drug-card.preferred.given { border-color: var(--g-accent); background: #e8f5e8; }
+  .post-drug-head { background: var(--g-mid); color: white; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
   .post-drug-head.ket-head { background: var(--g-deep); }
   .post-drug-head.midaz-head { background: var(--warn); }
-  .post-drug-name {
-    font-family: 'Courier New', monospace;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-  }
-  .post-drug-role {
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.7);
-  }
+  .post-drug-name { font-family: 'Courier New', monospace; font-size: 17px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; }
+  .post-drug-role { font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.85); font-weight: 700; }
   .post-drug-body { padding: 24px 16px; text-align: center; }
-  .post-ml-huge {
-    font-family: 'Courier New', monospace;
-    font-size: 88px;
-    font-weight: 700;
-    color: var(--g-mid);
-    line-height: 0.95;
-    letter-spacing: -3px;
-  }
+  .post-ml-row { display: flex; align-items: baseline; justify-content: center; gap: 8px; line-height: 1; }
+  .post-ml-huge { font-family: 'Courier New', monospace; font-size: 88px; font-weight: 700; color: var(--g-mid); line-height: 0.95; letter-spacing: -3px; }
   .post-ml-huge.ket-color { color: var(--g-deep); }
   .post-ml-huge.midaz-color { color: var(--warn); }
-  .post-ml-unit-big {
-    font-family: 'Courier New', monospace;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text-muted);
-    letter-spacing: 4px;
-    margin-top: 4px;
-  }
-  .post-mg-line {
-    font-family: 'Courier New', monospace;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-    margin-top: 14px;
-    letter-spacing: 1px;
-  }
-  .post-mg-line .post-max-tag {
-    display: inline-block;
-    background: var(--warn);
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    padding: 2px 7px;
-    border-radius: 4px;
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-  .post-drug-foot {
-    padding: 10px 14px;
-    background: #fafafa;
-    border-top: 1px solid #eee;
-    font-size: 12px;
-    color: var(--text);
-    line-height: 1.5;
-    text-align: center;
-    font-weight: 700;
-    font-family: 'Courier New', monospace;
-  }
+  .post-ml-unit-inline { font-family: 'Courier New', monospace; font-size: 26px; font-weight: 700; color: var(--text-muted); letter-spacing: 3px; }
+  .post-mg-line { font-family: 'Courier New', monospace; font-size: 19px; font-weight: 800; color: var(--text); margin-top: 14px; letter-spacing: 1px; }
+  .post-mg-line .post-max-tag { display: inline-block; background: var(--warn); color: white; font-size: 12px; font-weight: 800; letter-spacing: 1px; padding: 2px 7px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+  .post-given-stamp { margin-top: 14px; background: var(--g-accent); color: white; padding: 7px 14px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px; font-weight: 800; letter-spacing: 2px; display: inline-block; }
+  .post-drug-foot { padding: 11px 14px; background: #fafafa; border-top: 1px solid #eee; font-size: 13px; color: var(--text); line-height: 1.5; text-align: center; font-weight: 700; font-family: 'Courier New', monospace; }
   .post-drug-foot strong { color: var(--g-deep); }
-  .midaz-conc-note {
-    background: #fef6e4;
-    border: 1px solid #f0c060;
-    color: #7a5000;
-    padding: 8px 12px;
-    margin: 8px 12px 0;
-    border-radius: 6px;
-    font-size: 11px;
-    font-family: 'Courier New', monospace;
-    line-height: 1.5;
-  }
+  .post-drug-card.given .post-drug-foot { background: #d4ecd4; }
+  .midaz-conc-note { background: #fef6e4; border: 1px solid #f0c060; color: #7a5000; padding: 9px 12px; margin: 8px 12px 0; border-radius: 6px; font-size: 12px; font-family: 'Courier New', monospace; line-height: 1.5; }
   .midaz-conc-note strong { color: var(--warn); }
 
+  /* RASS */
   .rass-wrap { padding: 12px 14px; }
-  .rass-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .rass-table th {
-    background: var(--g-deep);
-    color: white;
-    padding: 7px 8px;
-    text-align: left;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-  }
-  .rass-table td { padding: 7px 8px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  .rass-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .rass-table th { background: var(--g-deep); color: white; padding: 8px; text-align: left; font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; }
+  .rass-table td { padding: 8px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
   .rass-table tr:last-child td { border-bottom: none; }
-  .rass-score {
-    font-family: 'Courier New', monospace;
-    font-weight: 700;
-    font-size: 15px;
-    width: 32px;
-  }
+  .rass-score { font-family: 'Courier New', monospace; font-weight: 800; font-size: 16px; width: 32px; }
   .rass-pos { color: var(--bad); }
   .rass-zero { color: var(--g-mid); }
   .rass-neg { color: var(--g-accent); }
   .rass-target { background: #e8f5e8 !important; }
-  .rass-target td:first-child::after { content: ' ★'; font-size: 9px; color: var(--g-accent); }
+  .rass-target td:first-child::after { content: ' ★'; font-size: 10px; color: var(--g-accent); }
 
-  /* ===== PEDS BROSELOW COLOR CODES ===== */
-  .peds-intro {
-    margin: 16px 16px 0;
-    background: white;
-    border: 1px solid #c5d9eb;
-    border-radius: 10px;
-    padding: 14px;
-  }
-  .peds-intro-label {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  .peds-age-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-  }
-  .peds-age-btn {
-    padding: 14px 4px;
-    border: 2px solid transparent;
-    border-radius: 6px;
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    font-weight: 800;
-    cursor: pointer;
-    text-align: center;
-    -webkit-tap-highlight-color: transparent;
-    transition: all 0.1s;
-    letter-spacing: 0.5px;
-    line-height: 1.2;
-  }
-  /* Broselow colors */
+  /* PEDS BROSELOW */
+  .peds-intro { margin: 16px 16px 0; background: white; border: 1px solid #c5d9eb; border-radius: 10px; padding: 14px; }
+  .peds-intro-label { font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; text-align: center; font-weight: 700; }
+  .peds-age-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .peds-age-btn { padding: 14px 4px; border: 2px solid transparent; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 12px; font-weight: 800; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; transition: all 0.1s; letter-spacing: 0.5px; line-height: 1.2; }
   .peds-age-btn.bro-grey   { background: #607D8B; color: white; }
   .peds-age-btn.bro-pink   { background: #EC407A; color: white; }
   .peds-age-btn.bro-red    { background: #D32F2F; color: white; }
@@ -1041,90 +278,20 @@
   .peds-age-btn.bro-orange { background: #FB8C00; color: white; }
   .peds-age-btn.bro-green  { background: #43A047; color: white; }
   .peds-age-btn:active { transform: scale(0.95); opacity: 0.85; }
-  .peds-age-btn.selected {
-    border-color: #000;
-    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
-    transform: scale(1.05);
-  }
-  .peds-length-divider {
-    margin: 14px 0 10px;
-    text-align: center;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--text-muted);
-    position: relative;
-  }
-  .peds-length-divider::before,
-  .peds-length-divider::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    width: 25%;
-    height: 1px;
-    background: #ddd;
-  }
+  .peds-age-btn.selected { border-color: #000; box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; transform: scale(1.05); }
+  .peds-length-divider { margin: 14px 0 10px; text-align: center; font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 3px; color: var(--text-muted); position: relative; font-weight: 700; }
+  .peds-length-divider::before, .peds-length-divider::after { content: ''; position: absolute; top: 50%; width: 25%; height: 1px; background: #ddd; }
   .peds-length-divider::before { left: 8%; }
   .peds-length-divider::after { right: 8%; }
-  .peds-length-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .peds-length-input {
-    flex: 0 0 110px;
-    width: 110px;
-    padding: 10px;
-    font-size: 22px;
-    font-weight: 700;
-    border: 2px solid #c5d9eb;
-    border-radius: 8px;
-    text-align: center;
-    font-family: 'Courier New', monospace;
-    color: var(--peds-deep);
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-  }
+  .peds-length-row { display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .peds-length-input { flex: 0 0 110px; width: 110px; padding: 11px; font-size: 24px; font-weight: 700; border: 2px solid #c5d9eb; border-radius: 8px; text-align: center; font-family: 'Courier New', monospace; color: var(--peds-deep); outline: none; appearance: none; -webkit-appearance: none; }
   .peds-length-input:focus { border-color: var(--peds-mid); }
-  .peds-length-input::-webkit-outer-spin-button,
-  .peds-length-input::-webkit-inner-spin-button {
-    -webkit-appearance: none; margin: 0;
-  }
-  .peds-length-unit {
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    color: var(--text-muted);
-    font-weight: 700;
-  }
-  .peds-length-btn {
-    padding: 11px 16px;
-    background: var(--peds-mid);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
+  .peds-length-input::-webkit-outer-spin-button, .peds-length-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .peds-length-unit { font-family: 'Courier New', monospace; font-size: 15px; color: var(--text-muted); font-weight: 700; }
+  .peds-length-btn { padding: 12px 18px; background: var(--peds-mid); color: white; border: none; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 14px; font-weight: 800; letter-spacing: 2px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .peds-length-btn:active { background: var(--peds-deep); }
-
-  .peds-summary {
-    margin: 16px 16px 0;
-    background: linear-gradient(135deg, var(--peds-deep) 0%, var(--peds-mid) 100%);
-    border-radius: 12px;
-    padding: 0 0 16px;
-    color: white;
-    overflow: hidden;
-  }
-  .peds-broselow-stripe {
-    height: 10px;
-    width: 100%;
-  }
+  .peds-summary { margin: 16px 16px 0; background: linear-gradient(135deg, var(--peds-deep) 0%, var(--peds-mid) 100%); border-radius: 12px; padding: 0 0 16px; color: white; overflow: hidden; }
+  .peds-broselow-stripe { height: 10px; width: 100%; }
   .peds-broselow-stripe.bro-grey   { background: #607D8B; }
   .peds-broselow-stripe.bro-pink   { background: #EC407A; }
   .peds-broselow-stripe.bro-red    { background: #D32F2F; }
@@ -1134,92 +301,56 @@
   .peds-broselow-stripe.bro-blue   { background: #1E88E5; }
   .peds-broselow-stripe.bro-orange { background: #FB8C00; }
   .peds-broselow-stripe.bro-green  { background: #43A047; }
-  .peds-summary-age {
-    font-family: 'Courier New', monospace;
-    font-size: 22px;
-    font-weight: 700;
-    text-align: center;
-    letter-spacing: 2px;
-    margin: 14px 0 12px;
-  }
-  .peds-summary-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px;
-    padding: 0 16px;
-  }
-  .peds-stat {
-    background: rgba(255,255,255,0.1);
-    border-radius: 6px;
-    padding: 10px 6px;
-    text-align: center;
-  }
-  .peds-stat-label {
-    font-family: 'Courier New', monospace;
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.55);
-  }
-  .peds-stat-value {
-    font-family: 'Courier New', monospace;
-    font-size: 18px;
-    font-weight: 700;
-    color: #9bc2e8;
-    margin-top: 3px;
-    line-height: 1.1;
-  }
-  .peds-stat-sub {
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    color: rgba(255,255,255,0.6);
-    margin-top: 1px;
-  }
+  .peds-summary-age { font-family: 'Courier New', monospace; font-size: 24px; font-weight: 800; text-align: center; letter-spacing: 2px; margin: 14px 0 12px; }
+  .peds-summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; padding: 0 16px; }
+  .peds-stat { background: rgba(255,255,255,0.1); border-radius: 6px; padding: 11px 6px; text-align: center; }
+  .peds-stat-label { font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 700; }
+  .peds-stat-value { font-family: 'Courier New', monospace; font-size: 19px; font-weight: 800; color: #9bc2e8; margin-top: 3px; line-height: 1.1; }
+  .peds-stat-sub { font-family: 'Courier New', monospace; font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 1px; }
+  .section-label { font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin: 16px 16px 0; text-align: left; font-weight: 800; }
 
-  .section-label {
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin: 14px 16px 0;
-    text-align: left;
-    font-weight: 700;
-  }
-
+  /* MEDS LOG MODAL */
+  .meds-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.15s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .meds-modal-content { background: white; border-radius: 14px; width: 100%; max-width: 460px; max-height: 80vh; overflow: hidden; display: flex; flex-direction: column; }
+  .meds-modal-header { background: var(--bad); color: white; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .meds-modal-title { font-family: 'Courier New', monospace; font-size: 15px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+  .meds-modal-close { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 26px; cursor: pointer; width: 36px; height: 36px; border-radius: 6px; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0; }
+  .meds-modal-close:active { background: rgba(255,255,255,0.35); }
+  #meds-list-body { padding: 8px; overflow-y: auto; flex: 1; }
+  .med-log-item { display: grid; grid-template-columns: 1fr auto; padding: 13px 12px; border-bottom: 1px solid #eee; align-items: center; gap: 12px; }
+  .med-log-item:last-child { border-bottom: none; }
+  .med-log-drug { font-family: 'Courier New', monospace; font-size: 15px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--g-deep); }
+  .med-log-dose { font-family: 'Courier New', monospace; font-size: 14px; color: var(--text); margin-top: 3px; font-weight: 700; }
+  .med-log-time { font-family: 'Courier New', monospace; font-size: 16px; font-weight: 800; color: var(--bad); text-align: right; }
+  .meds-modal-actions { padding: 12px; border-top: 1px solid #eee; display: flex; gap: 8px; }
+  .clear-meds-btn { flex: 1; padding: 13px; background: var(--bad); color: white; border: none; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 14px; font-weight: 800; letter-spacing: 2px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .clear-meds-btn:active { opacity: 0.85; }
+  .close-meds-btn { flex: 1; padding: 13px; background: #eee; color: var(--text); border: none; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 14px; font-weight: 800; letter-spacing: 2px; cursor: pointer; }
+  .empty-meds { text-align: center; padding: 40px 20px; color: var(--text-muted); font-family: 'Courier New', monospace; font-size: 13px; letter-spacing: 1px; }
   .spacer-lg { height: 28px; }
 </style>
 </head>
 <body>
-
-<!-- ============ SPLASH ============ -->
+<!-- SPLASH -->
 <div id="splash">
   <div class="splash-logo">NCEMS · Clark County</div>
   <div class="splash-title">Intubation<br>Guide</div>
   <div class="splash-cards">
-    <button class="splash-btn dsi" onclick="showView('dsi')">
-      <div class="splash-btn-title">DSI</div>
-    </button>
-    <button class="splash-btn crash" onclick="showView('crash')">
-      <div class="splash-btn-title">Adult Crash Airway</div>
-    </button>
-    <button class="splash-btn peds" onclick="showView('peds')">
-      <div class="splash-btn-title">Peds RSI</div>
-    </button>
-    <button class="splash-btn post" onclick="showView('post')">
-      <div class="splash-btn-title">Post-Intubation</div>
-    </button>
+    <button class="splash-btn dsi" onclick="showView('dsi')"><div class="splash-btn-title">DSI</div></button>
+    <button class="splash-btn crash" onclick="showView('crash')"><div class="splash-btn-title">Adult Crash Airway</div></button>
+    <button class="splash-btn peds" onclick="showView('peds')"><div class="splash-btn-title">Peds RSI</div></button>
+    <button class="splash-btn post" onclick="showView('post')"><div class="splash-btn-title">Post-Intubation</div></button>
   </div>
-  <div class="splash-version">v1.5</div>
+  <div class="splash-version">v1.6</div>
 </div>
 
-<!-- ============ DSI ============ -->
+<!-- DSI -->
 <div id="view-dsi" class="view">
   <div class="view-header">
     <button class="back-btn" onclick="showSplash()">‹</button>
-    <div class="view-header-text">
-      <div class="view-header-title">DSI</div>
-    </div>
+    <div class="view-header-text"><div class="view-header-title">DSI</div></div>
+    <button class="meds-log-btn" onclick="showMedsLog()"><span class="meds-icon">💊</span><span class="meds-count">0</span></button>
   </div>
   <div class="view-body">
 
@@ -1230,9 +361,9 @@
         <button class="weight-unit-btn" id="dsi-unit-kg" onclick="setDsiUnit('kg')">KG</button>
       </div>
       <div class="weight-input-row">
-        <input type="text" inputmode="decimal" pattern="[0-9]*" class="weight-input" id="dsi-weight-input" placeholder="0" oninput="calcDsiDoses()" onkeydown="if(event.key==='Enter'){this.blur();calcDsiDoses();}">
+        <input type="text" inputmode="decimal" pattern="[0-9]*" class="weight-input" id="dsi-weight-input" placeholder="0" oninput="calcDsiDoses()" onkeydown="if(event.key==='Enter'){this.blur();calcDsiDoses();scrollToDsiVS();}">
         <span class="weight-unit-display" id="dsi-unit-display">lbs</span>
-        <button class="weight-enter-btn" onclick="document.getElementById('dsi-weight-input').blur();calcDsiDoses();">GO</button>
+        <button class="weight-enter-btn" onclick="document.getElementById('dsi-weight-input').blur();calcDsiDoses();scrollToDsiVS();">GO</button>
       </div>
       <div class="weight-presets" id="dsi-preset-row">
         <button class="preset-btn" onclick="setDsiPreset(110)">110</button>
@@ -1246,22 +377,22 @@
       </div>
     </div>
 
-    <div class="vs-banner">
-      <div class="vs-banner-title">Hit BOTH x 3 min BEFORE PARALYTIC</div>
+    <div class="vs-banner" id="dsi-vs-banner">
+      <div class="vs-banner-title">Target Vital Signs</div>
+      <div class="vs-banner-sub">Hit BOTH × 3 min before paralytic</div>
       <div class="vs-grid">
         <div class="vs-cell" id="vs-spo2" onclick="vsCellTap('spo2')">
-          <div class="vs-value">SpO2 ≥94%</div>
+          <div class="vs-value">SpO₂ ≥94%</div>
           <div class="vs-label">CPAP / BVM + PEEP</div>
         </div>
         <div class="vs-cell" id="vs-bp" onclick="vsCellTap('bp')">
           <div class="vs-value">SBP &gt;90<br>MAP &gt;65</div>
-          <div class="vs-label">Fluids / Low-dose Epi</div>
+          <div class="vs-label">Fluids / Low-Dose Epi</div>
         </div>
       </div>
-      <div class="vs-hint">TAP BOTH TARGETS TO START TIMER</div>
     </div>
 
-    <div class="timer-inline">
+    <div class="timer-inline" id="dsi-timer-section">
       <div class="timer-label">3-Minute Timer</div>
       <div class="timer-display" id="dsi-timer">3:00</div>
       <div class="timer-btn-row">
@@ -1277,64 +408,57 @@
       <div class="big-dose-grid">
         <div class="big-dose-col preferred-col">
           <div class="pref-col-label">★ PREFERRED</div>
-          <div class="big-card">
-            <div class="big-card-head dsi-induction">
-              <div class="big-card-name">Ketamine</div>
-              <div class="big-card-class">Induction</div>
-            </div>
+          <div class="big-card" id="card-dsi-ket" onclick="giveMed('dsi-ket', 'Ketamine', 'dsi-ml-ket', 'dsi-mg-ket')">
+            <div class="big-card-head dsi-induction"><div class="big-card-name">Ketamine</div><div class="big-card-class">Induction</div></div>
             <div class="big-card-body">
-              <div class="big-ml dsi-color" id="dsi-ml-ket">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml dsi-color" id="dsi-ml-ket">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="dsi-mg-ket">0 mg</div>
               <div id="dsi-max-ket" style="display:none;"><span class="big-max-tag">MAX 200</span></div>
+              <div class="given-stamp" id="given-dsi-ket" style="display:none;">✓ GIVEN <span id="given-dsi-ket-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1 mg/kg · 50 mg/mL</div>
           </div>
-          <div class="big-card">
-            <div class="big-card-head dsi-paralytic">
-              <div class="big-card-name">Rocuronium</div>
-              <div class="big-card-class">Paralytic</div>
-            </div>
+          <div class="big-card" id="card-dsi-roc" onclick="giveMed('dsi-roc', 'Rocuronium', 'dsi-ml-roc', 'dsi-mg-roc')">
+            <div class="big-card-head dsi-paralytic"><div class="big-card-name">Rocuronium</div><div class="big-card-class">Paralytic</div></div>
             <div class="big-card-body">
-              <div class="big-ml dsi-color" id="dsi-ml-roc">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml dsi-color" id="dsi-ml-roc">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="dsi-mg-roc">0 mg</div>
               <div id="dsi-max-roc" style="display:none;"><span class="big-max-tag">MAX 300</span></div>
+              <div class="given-stamp" id="given-dsi-roc" style="display:none;">✓ GIVEN <span id="given-dsi-roc-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1.5 mg/kg · 10 mg/mL</div>
           </div>
         </div>
         <div class="big-dose-col alt-col">
           <div class="alt-col-label">Alternative</div>
-          <div class="big-card">
-            <div class="big-card-head dsi-induction">
-              <div class="big-card-name">Etomidate</div>
-              <div class="big-card-class">If no Ket</div>
-            </div>
+          <div class="big-card" id="card-dsi-eto" onclick="giveMed('dsi-eto', 'Etomidate', 'dsi-ml-eto', 'dsi-mg-eto')">
+            <div class="big-card-head dsi-induction"><div class="big-card-name">Etomidate</div><div class="big-card-class">If No Ket</div></div>
             <div class="big-card-body">
-              <div class="big-ml dsi-color" id="dsi-ml-eto">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml dsi-color" id="dsi-ml-eto">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="dsi-mg-eto">0 mg</div>
               <div id="dsi-max-eto" style="display:none;"><span class="big-max-tag">MAX 60</span></div>
+              <div class="given-stamp" id="given-dsi-eto" style="display:none;">✓ GIVEN <span id="given-dsi-eto-time">--:--</span></div>
             </div>
             <div class="big-card-foot">0.3 mg/kg · 2 mg/mL</div>
           </div>
-          <div class="big-card">
-            <div class="big-card-head dsi-paralytic">
-              <div class="big-card-name">Sux</div>
-              <div class="big-card-class">Neuro exam</div>
-            </div>
+          <div class="big-card" id="card-dsi-sux" onclick="giveMed('dsi-sux', 'Succinylcholine', 'dsi-ml-sux', 'dsi-mg-sux')">
+            <div class="big-card-head dsi-paralytic"><div class="big-card-name">Sux</div><div class="big-card-class">Neuro Exam</div></div>
             <div class="big-card-body">
-              <div class="big-ml dsi-color" id="dsi-ml-sux">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml dsi-color" id="dsi-ml-sux">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="dsi-mg-sux">0 mg</div>
               <div id="dsi-max-sux" style="display:none;"><span class="big-max-tag">MAX 300</span></div>
+              <div class="given-stamp" id="given-dsi-sux" style="display:none;">✓ GIVEN <span id="given-dsi-sux-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1.5 mg/kg · 20 mg/mL</div>
           </div>
         </div>
       </div>
     </div>
+
+    <button class="nav-btn" onclick="goToPost('dsi')">
+      <div class="nav-btn-title">Post-Intubation →</div>
+      <span class="nav-btn-arrow">›</span>
+    </button>
 
     <div class="accordion" id="acc-equip">
       <div class="acc-header" onclick="toggleAcc('acc-equip')">
@@ -1367,23 +491,13 @@
         <div class="lemon-table">
           <div class="lemon-row">
             <div class="lemon-letter">L</div>
-            <div class="lemon-body">
-              <div class="lemon-word">Look Externally</div>
-              <div class="lemon-detail">
-                <ul><li>Facial trauma</li><li>Large incisors</li><li>Beard / moustache</li><li>Large tongue</li></ul>
-              </div>
-            </div>
+            <div class="lemon-body"><div class="lemon-word">Look Externally</div><div class="lemon-detail"><ul><li>Facial trauma</li><li>Large incisors</li><li>Beard / moustache</li><li>Large tongue</li></ul></div></div>
           </div>
           <div class="lemon-row">
             <div class="lemon-letter">E</div>
-            <div class="lemon-body">
-              <div class="lemon-word">3-3-2 Rule</div>
+            <div class="lemon-body"><div class="lemon-word">3-3-2 Rule</div>
               <div class="lemon-detail">
-                <ul>
-                  <li>Mouth opening: <strong>3 FB</strong> between incisors</li>
-                  <li>Chin to hyoid: <strong>3 FB</strong></li>
-                  <li>Hyoid to thyroid: <strong>2 FB</strong></li>
-                </ul>
+                <ul><li>Mouth opening: <strong>3 FB</strong> between incisors</li><li>Chin to hyoid: <strong>3 FB</strong></li><li>Hyoid to thyroid: <strong>2 FB</strong></li></ul>
                 <div class="e-rule-svg">
                   <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 80 25 Q 50 25 45 70 Q 42 100 50 125 L 60 140 Q 70 158 95 165 L 110 175 L 130 180 L 155 188" stroke="#444" stroke-width="2.5" fill="none" stroke-linecap="round"/>
@@ -1412,76 +526,17 @@
               </div>
             </div>
           </div>
-          <div class="lemon-row">
-            <div class="lemon-letter">M</div>
-            <div class="lemon-body">
-              <div class="lemon-word">Mallampati ≥ 3</div>
-              <div class="lemon-detail">Soft / hard palate only visible → difficult.</div>
-            </div>
-          </div>
-          <div class="lemon-row">
-            <div class="lemon-letter">O</div>
-            <div class="lemon-body">
-              <div class="lemon-word">Obstruction</div>
-              <div class="lemon-detail">Epiglottitis · peritonsillar abscess · trauma</div>
-            </div>
-          </div>
-          <div class="lemon-row">
-            <div class="lemon-letter">N</div>
-            <div class="lemon-body">
-              <div class="lemon-word">Neck Mobility</div>
-              <div class="lemon-detail">C-spine · arthritis · immobilization</div>
-            </div>
-          </div>
+          <div class="lemon-row"><div class="lemon-letter">M</div><div class="lemon-body"><div class="lemon-word">Mallampati ≥ 3</div><div class="lemon-detail">Soft / hard palate only visible → difficult.</div></div></div>
+          <div class="lemon-row"><div class="lemon-letter">O</div><div class="lemon-body"><div class="lemon-word">Obstruction</div><div class="lemon-detail">Epiglottitis · peritonsillar abscess · trauma</div></div></div>
+          <div class="lemon-row"><div class="lemon-letter">N</div><div class="lemon-body"><div class="lemon-word">Neck Mobility</div><div class="lemon-detail">C-spine · arthritis · immobilization</div></div></div>
         </div>
-
         <div class="mallampati">
           <div class="mallampati-title">Mallampati Classification</div>
           <div class="mallampati-grid">
-            <div class="mp-class">
-              <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="40" cy="40" rx="34" ry="32" fill="#1a0808"/>
-                <ellipse cx="40" cy="40" rx="34" ry="32" fill="none" stroke="#8B3030" stroke-width="2.5"/>
-                <path d="M 14 24 Q 40 12 66 24" stroke="#D88B7B" stroke-width="3" fill="none"/>
-                <path d="M 18 26 Q 22 42 26 56" stroke="#C07060" stroke-width="2.5" fill="none"/>
-                <path d="M 62 26 Q 58 42 54 56" stroke="#C07060" stroke-width="2.5" fill="none"/>
-                <ellipse cx="40" cy="28" rx="3" ry="9" fill="#D88B7B"/>
-                <path d="M 10 75 Q 40 55 70 75 Z" fill="#E0A0A0" stroke="#A04040" stroke-width="1.5"/>
-              </svg>
-              <div class="mp-num">CLASS I</div>
-              <div class="mp-desc">Soft palate, uvula, pillars</div>
-            </div>
-            <div class="mp-class">
-              <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="40" cy="40" rx="34" ry="32" fill="#1a0808"/>
-                <ellipse cx="40" cy="40" rx="34" ry="32" fill="none" stroke="#8B3030" stroke-width="2.5"/>
-                <path d="M 16 28 Q 40 18 64 28" stroke="#D88B7B" stroke-width="3" fill="none"/>
-                <ellipse cx="40" cy="32" rx="3" ry="6" fill="#D88B7B"/>
-                <path d="M 10 75 Q 40 42 70 75 Z" fill="#E0A0A0" stroke="#A04040" stroke-width="1.5"/>
-              </svg>
-              <div class="mp-num">CLASS II</div>
-              <div class="mp-desc">Soft palate, base of uvula</div>
-            </div>
-            <div class="mp-class">
-              <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="40" cy="40" rx="34" ry="32" fill="#1a0808"/>
-                <ellipse cx="40" cy="40" rx="34" ry="32" fill="none" stroke="#8B3030" stroke-width="2.5"/>
-                <path d="M 18 30 Q 40 22 62 30" stroke="#D88B7B" stroke-width="3" fill="none"/>
-                <path d="M 10 75 Q 40 30 70 75 Z" fill="#E0A0A0" stroke="#A04040" stroke-width="1.5"/>
-              </svg>
-              <div class="mp-num">CLASS III</div>
-              <div class="mp-desc">Soft palate only</div>
-            </div>
-            <div class="mp-class">
-              <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="40" cy="40" rx="34" ry="32" fill="#1a0808"/>
-                <ellipse cx="40" cy="40" rx="34" ry="32" fill="none" stroke="#8B3030" stroke-width="2.5"/>
-                <path d="M 14 22 Q 40 18 66 22" stroke="#F0C0B0" stroke-width="2" fill="none" stroke-dasharray="3,2"/>
-                <path d="M 10 75 Q 40 20 70 75 Z" fill="#E0A0A0" stroke="#A04040" stroke-width="1.5"/>
-              </svg>
-              <div class="mp-num">CLASS IV</div>
-              <div class="mp-desc">Hard palate only</div>
-            </div>
+            <div class="mp-class"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="40" rx="34" ry="32" fill="#1a0808"/><ellipse cx="40" cy="40" rx="34" ry="32" fill="none" stroke="#8B3030" stroke-width="2.5"/><path d="M 14 24 Q 40 12 66 24" stroke="#D88B7B" stroke-width="3" fill="none"/><path d="M 18 26 Q 22 42 26 56" stroke="#C07060" stroke-width="2.5" fill="none"/><path d="M 62 26 Q 58 42 54 56" stroke="#C07060" stroke-width="2.5" fill="none"/><ellipse cx="40" cy="28" rx="3" ry="9" fill="#D88B7B"/><path d="M 10 75 Q 40 55 70 75 Z" fill="#E0A0A0" stroke="#A04040" stroke-width="1.5"/></svg><div class="mp-num">CLASS I</div><div class="mp-desc">Soft palate, uvula, pillars</div></div>
+            <div class="mp-class"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="40" rx="34" ry="32" fill="#1a0808"/><ellipse cx="40" cy="40" rx="34" ry="32" fill="none" stroke="#8B3030" stroke-width="2.5"/><path d="M 16 28 Q 40 18 64 28" stroke="#D88B7B" stroke-width="3" fill="none"/><ellipse cx="40" cy="32" rx="3" ry="6" fill="#D88B7B"/><path d="M 10 75 Q 40 42 70 75 Z" fill="#E0A0A0" stroke="#A04040" stroke-width="1.5"/></svg><div class="mp-num">CLASS II</div><div class="mp-desc">Soft palate, base of uvula</div></div>
+            <div class="mp-class"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="40" rx="34" ry="32" fill="#1a0808"/><ellipse cx="40" cy="40" rx="34" ry="32" fill="none" stroke="#8B3030" stroke-width="2.5"/><path d="M 18 30 Q 40 22 62 30" stroke="#D88B7B" stroke-width="3" fill="none"/><path d="M 10 75 Q 40 30 70 75 Z" fill="#E0A0A0" stroke="#A04040" stroke-width="1.5"/></svg><div class="mp-num">CLASS III</div><div class="mp-desc">Soft palate only</div></div>
+            <div class="mp-class"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="40" rx="34" ry="32" fill="#1a0808"/><ellipse cx="40" cy="40" rx="34" ry="32" fill="none" stroke="#8B3030" stroke-width="2.5"/><path d="M 14 22 Q 40 18 66 22" stroke="#F0C0B0" stroke-width="2" fill="none" stroke-dasharray="3,2"/><path d="M 10 75 Q 40 20 70 75 Z" fill="#E0A0A0" stroke="#A04040" stroke-width="1.5"/></svg><div class="mp-num">CLASS IV</div><div class="mp-desc">Hard palate only</div></div>
           </div>
         </div>
       </div></div>
@@ -1496,7 +551,6 @@
         <div class="consid-block">
           <ul class="consid-list">
             <li><strong>Can't reach SpO2 94%</strong> → BVM + PEEP 10 · NPA/OPA or iGel</li>
-            <li><strong>Still can't reach 94%</strong> → continue ventilation</li>
             <li><strong>Can't intubate</strong> → iGel + ventilate</li>
             <li><strong>Cric</strong> if oxygenation impossible · needle jet if peds &lt;12</li>
             <li><strong>2 failed attempts</strong> → change operator OR iGel</li>
@@ -1516,11 +570,6 @@
       </div></div>
     </div>
 
-    <button class="nav-btn" onclick="goToPost('dsi')">
-      <div class="nav-btn-title">Post-Intubation →</div>
-      <span class="nav-btn-arrow">›</span>
-    </button>
-
     <div class="cric-banner">
       <div class="cric-banner-title">⚠ Failure Path</div>
       <div class="cric-banner-text">Att. 1 fails → change operator · Att. 2 fails → iGel<br>Can't ox/vent → <strong>Cricothyrotomy</strong> (needle jet if peds &lt;12)</div>
@@ -1529,14 +578,12 @@
     <div class="spacer-lg"></div>
   </div>
 </div>
-
-<!-- ============ ADULT CRASH ============ -->
+<!-- ADULT CRASH -->
 <div id="view-crash" class="view">
   <div class="view-header crash-header">
     <button class="back-btn" onclick="showSplash()">‹</button>
-    <div class="view-header-text">
-      <div class="view-header-title">Adult Crash Airway</div>
-    </div>
+    <div class="view-header-text"><div class="view-header-title">Adult Crash</div></div>
+    <button class="meds-log-btn" onclick="showMedsLog()"><span class="meds-icon">💊</span><span class="meds-count">0</span></button>
   </div>
   <div class="view-body">
 
@@ -1547,9 +594,9 @@
         <button class="weight-unit-btn" id="unit-kg" onclick="setUnit('kg')">KG</button>
       </div>
       <div class="weight-input-row">
-        <input type="text" inputmode="decimal" pattern="[0-9]*" class="weight-input" id="weight-input" placeholder="0" oninput="calcDoses()" onkeydown="if(event.key==='Enter'){this.blur();calcDoses();}">
+        <input type="text" inputmode="decimal" pattern="[0-9]*" class="weight-input" id="weight-input" placeholder="0" oninput="calcDoses()" onkeydown="if(event.key==='Enter'){this.blur();calcDoses();scrollToCrashDoses();}">
         <span class="weight-unit-display" id="unit-display">lbs</span>
-        <button class="weight-enter-btn" onclick="document.getElementById('weight-input').blur();calcDoses();">GO</button>
+        <button class="weight-enter-btn" onclick="document.getElementById('weight-input').blur();calcDoses();scrollToCrashDoses();">GO</button>
       </div>
       <div class="weight-presets" id="preset-row">
         <button class="preset-btn" onclick="setPreset(110)">110</button>
@@ -1569,74 +616,62 @@
       <div class="big-dose-grid">
         <div class="big-dose-col preferred-col">
           <div class="pref-col-label">★ PREFERRED</div>
-          <div class="big-card">
-            <div class="big-card-head crash-induction">
-              <div class="big-card-name">Ketamine</div>
-              <div class="big-card-class">Induction</div>
-            </div>
+          <div class="big-card" id="card-crash-ket" onclick="giveMed('crash-ket', 'Ketamine', 'ml-ket', 'mg-ket')">
+            <div class="big-card-head crash-induction"><div class="big-card-name">Ketamine</div><div class="big-card-class">Induction</div></div>
             <div class="big-card-body">
-              <div class="big-ml crash-color" id="ml-ket">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml crash-color" id="ml-ket">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="mg-ket">0 mg</div>
               <div id="max-ket" style="display:none;"><span class="big-max-tag">MAX 200</span></div>
+              <div class="given-stamp" id="given-crash-ket" style="display:none;">✓ GIVEN <span id="given-crash-ket-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1 mg/kg · 50 mg/mL</div>
           </div>
-          <div class="big-card">
-            <div class="big-card-head crash-paralytic">
-              <div class="big-card-name">Rocuronium</div>
-              <div class="big-card-class">Paralytic</div>
-            </div>
+          <div class="big-card" id="card-crash-roc" onclick="giveMed('crash-roc', 'Rocuronium', 'ml-roc', 'mg-roc')">
+            <div class="big-card-head crash-paralytic"><div class="big-card-name">Rocuronium</div><div class="big-card-class">Paralytic</div></div>
             <div class="big-card-body">
-              <div class="big-ml crash-color" id="ml-roc">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml crash-color" id="ml-roc">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="mg-roc">0 mg</div>
               <div id="max-roc" style="display:none;"><span class="big-max-tag">MAX 300</span></div>
+              <div class="given-stamp" id="given-crash-roc" style="display:none;">✓ GIVEN <span id="given-crash-roc-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1.5 mg/kg · 10 mg/mL</div>
           </div>
         </div>
         <div class="big-dose-col alt-col">
           <div class="alt-col-label">Alternative</div>
-          <div class="big-card">
-            <div class="big-card-head crash-induction">
-              <div class="big-card-name">Etomidate</div>
-              <div class="big-card-class">If no Ket</div>
-            </div>
+          <div class="big-card" id="card-crash-eto" onclick="giveMed('crash-eto', 'Etomidate', 'ml-eto', 'mg-eto')">
+            <div class="big-card-head crash-induction"><div class="big-card-name">Etomidate</div><div class="big-card-class">If No Ket</div></div>
             <div class="big-card-body">
-              <div class="big-ml crash-color" id="ml-eto">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml crash-color" id="ml-eto">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="mg-eto">0 mg</div>
               <div id="max-eto" style="display:none;"><span class="big-max-tag">MAX 60</span></div>
+              <div class="given-stamp" id="given-crash-eto" style="display:none;">✓ GIVEN <span id="given-crash-eto-time">--:--</span></div>
             </div>
             <div class="big-card-foot">0.3 mg/kg · 2 mg/mL</div>
           </div>
-          <div class="big-card">
-            <div class="big-card-head crash-paralytic">
-              <div class="big-card-name">Sux</div>
-              <div class="big-card-class">Neuro exam</div>
-            </div>
+          <div class="big-card" id="card-crash-sux" onclick="giveMed('crash-sux', 'Succinylcholine', 'ml-sux', 'mg-sux')">
+            <div class="big-card-head crash-paralytic"><div class="big-card-name">Sux</div><div class="big-card-class">Neuro Exam</div></div>
             <div class="big-card-body">
-              <div class="big-ml crash-color" id="ml-sux">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml crash-color" id="ml-sux">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="mg-sux">0 mg</div>
               <div id="max-sux" style="display:none;"><span class="big-max-tag">MAX 300</span></div>
+              <div class="given-stamp" id="given-crash-sux" style="display:none;">✓ GIVEN <span id="given-crash-sux-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1.5 mg/kg · 20 mg/mL</div>
           </div>
         </div>
       </div>
 
+      <button class="nav-btn" onclick="goToPost('crash')">
+        <div class="nav-btn-title">Post-Intubation →</div>
+        <span class="nav-btn-arrow">›</span>
+      </button>
+
       <div class="warn-box">
         <strong>Shock / MAP &lt;65:</strong> half-dose induction<br>
         <strong>Sux CI:</strong> hyperK+ · renal failure · neuromuscular hx · burns/crush &gt;48h · rhabdo<br>
         <strong>Roc:</strong> avoid stroke/neurotrauma if transport &lt;45 min
       </div>
-
-      <button class="nav-btn" onclick="goToPost('crash')">
-        <div class="nav-btn-title">Post-Intubation →</div>
-        <span class="nav-btn-arrow">›</span>
-      </button>
     </div>
 
     <div class="cric-banner">
@@ -1648,20 +683,18 @@
   </div>
 </div>
 
-<!-- ============ PEDS ============ -->
+<!-- PEDS -->
 <div id="view-peds" class="view">
   <div class="view-header peds-header">
     <button class="back-btn" onclick="showSplash()">‹</button>
-    <div class="view-header-text">
-      <div class="view-header-title">Peds RSI</div>
-    </div>
+    <div class="view-header-text"><div class="view-header-title">Peds RSI / DSI</div></div>
+    <button class="meds-log-btn" onclick="showMedsLog()"><span class="meds-icon">💊</span><span class="meds-count">0</span></button>
   </div>
   <div class="view-body peds-body">
 
     <div class="peds-intro">
       <div class="peds-intro-label">Select Age</div>
       <div class="peds-age-grid" id="peds-age-grid"></div>
-
       <div class="peds-length-divider">OR ENTER LENGTH</div>
       <div class="peds-length-row">
         <input type="text" inputmode="decimal" pattern="[0-9]*" class="peds-length-input" id="peds-length-input" placeholder="0" oninput="selectByLength()" onkeydown="if(event.key==='Enter'){this.blur();selectByLength();}">
@@ -1677,75 +710,76 @@
         <div class="peds-broselow-stripe" id="peds-broselow"></div>
         <div class="peds-summary-age" id="peds-age-display">-</div>
         <div class="peds-summary-grid">
-          <div class="peds-stat">
-            <div class="peds-stat-label">Weight</div>
-            <div class="peds-stat-value" id="peds-weight">- kg</div>
-            <div class="peds-stat-sub" id="peds-weight-lbs">- lbs</div>
+          <div class="peds-stat"><div class="peds-stat-label">Weight</div><div class="peds-stat-value" id="peds-weight">- kg</div><div class="peds-stat-sub" id="peds-weight-lbs">- lbs</div></div>
+          <div class="peds-stat"><div class="peds-stat-label">ETT</div><div class="peds-stat-value" id="peds-ett">-</div><div class="peds-stat-sub" id="peds-length">-</div></div>
+          <div class="peds-stat"><div class="peds-stat-label">iGel</div><div class="peds-stat-value" id="peds-igel">-</div><div class="peds-stat-sub">Size</div></div>
+        </div>
+      </div>
+
+      <div class="vs-banner peds-vs" id="peds-vs-banner">
+        <div class="vs-banner-title">Target Vital Signs</div>
+        <div class="vs-banner-sub">Hit BOTH × 3 min before paralytic</div>
+        <div class="vs-grid">
+          <div class="vs-cell" id="peds-vs-spo2" onclick="pedsVsCellTap('spo2')">
+            <div class="vs-value">SpO₂ ≥94%</div>
+            <div class="vs-label">CPAP / BVM + PEEP</div>
           </div>
-          <div class="peds-stat">
-            <div class="peds-stat-label">ETT</div>
-            <div class="peds-stat-value" id="peds-ett">-</div>
-            <div class="peds-stat-sub" id="peds-length">-</div>
-          </div>
-          <div class="peds-stat">
-            <div class="peds-stat-label">iGel</div>
-            <div class="peds-stat-value" id="peds-igel">-</div>
-            <div class="peds-stat-sub">Size</div>
+          <div class="vs-cell" id="peds-vs-bp" onclick="pedsVsCellTap('bp')">
+            <div class="vs-value">Age-Appropriate<br>SBP / MAP</div>
+            <div class="vs-label">Fluids / Low-Dose Epi</div>
           </div>
         </div>
+      </div>
+
+      <div class="timer-inline" id="peds-timer-section">
+        <div class="timer-label">3-Minute Timer</div>
+        <div class="timer-display" id="peds-timer">3:00</div>
+        <div class="timer-btn-row">
+          <button class="timer-btn start" id="peds-start-btn" onclick="pedsManualStart()">START</button>
+          <button class="timer-btn reset" onclick="pedsResetTimer()">RESET</button>
+        </div>
+        <div class="timer-status" id="peds-timer-status">​</div>
       </div>
 
       <div class="big-dose-grid">
         <div class="big-dose-col preferred-col">
           <div class="pref-col-label">★ PREFERRED</div>
-          <div class="big-card">
-            <div class="big-card-head peds-induction">
-              <div class="big-card-name">Ketamine</div>
-              <div class="big-card-class">Induction</div>
-            </div>
+          <div class="big-card" id="card-peds-ket" onclick="giveMed('peds-ket', 'Ketamine (Peds)', 'p-ml-ket', 'p-mg-ket')">
+            <div class="big-card-head peds-induction"><div class="big-card-name">Ketamine</div><div class="big-card-class">Induction</div></div>
             <div class="big-card-body">
-              <div class="big-ml peds-color" id="p-ml-ket">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml peds-color" id="p-ml-ket">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="p-mg-ket">0 mg</div>
+              <div class="given-stamp" id="given-peds-ket" style="display:none;">✓ GIVEN <span id="given-peds-ket-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1 mg/kg · 50 mg/mL</div>
           </div>
-          <div class="big-card">
-            <div class="big-card-head peds-paralytic">
-              <div class="big-card-name">Rocuronium</div>
-              <div class="big-card-class">Paralytic</div>
-            </div>
+          <div class="big-card" id="card-peds-roc" onclick="giveMed('peds-roc', 'Rocuronium (Peds)', 'p-ml-roc', 'p-mg-roc')">
+            <div class="big-card-head peds-paralytic"><div class="big-card-name">Rocuronium</div><div class="big-card-class">Paralytic</div></div>
             <div class="big-card-body">
-              <div class="big-ml peds-color" id="p-ml-roc">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml peds-color" id="p-ml-roc">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="p-mg-roc">0 mg</div>
+              <div class="given-stamp" id="given-peds-roc" style="display:none;">✓ GIVEN <span id="given-peds-roc-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1.5 mg/kg · 10 mg/mL</div>
           </div>
         </div>
         <div class="big-dose-col alt-col">
           <div class="alt-col-label">Alternative</div>
-          <div class="big-card">
-            <div class="big-card-head peds-induction">
-              <div class="big-card-name">Etomidate</div>
-              <div class="big-card-class">If no Ket</div>
-            </div>
+          <div class="big-card" id="card-peds-eto" onclick="giveMed('peds-eto', 'Etomidate (Peds)', 'p-ml-eto', 'p-mg-eto')">
+            <div class="big-card-head peds-induction"><div class="big-card-name">Etomidate</div><div class="big-card-class">If No Ket</div></div>
             <div class="big-card-body">
-              <div class="big-ml peds-color" id="p-ml-eto">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml peds-color" id="p-ml-eto">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="p-mg-eto">0 mg</div>
+              <div class="given-stamp" id="given-peds-eto" style="display:none;">✓ GIVEN <span id="given-peds-eto-time">--:--</span></div>
             </div>
             <div class="big-card-foot">0.3 mg/kg · 2 mg/mL</div>
           </div>
-          <div class="big-card">
-            <div class="big-card-head peds-paralytic">
-              <div class="big-card-name">Sux</div>
-              <div class="big-card-class">Neuro exam</div>
-            </div>
+          <div class="big-card" id="card-peds-sux" onclick="giveMed('peds-sux', 'Succinylcholine (Peds)', 'p-ml-sux', 'p-mg-sux')">
+            <div class="big-card-head peds-paralytic"><div class="big-card-name">Sux</div><div class="big-card-class">Neuro Exam</div></div>
             <div class="big-card-body">
-              <div class="big-ml peds-color" id="p-ml-sux">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml peds-color" id="p-ml-sux">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="p-mg-sux">0 mg</div>
+              <div class="given-stamp" id="given-peds-sux" style="display:none;">✓ GIVEN <span id="given-peds-sux-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1.5 mg/kg · 20 mg/mL</div>
           </div>
@@ -1753,45 +787,41 @@
       </div>
 
       <div class="section-label">Midazolam (Alt Induction)</div>
-      <div class="single-big-card">
-        <div class="big-card-head peds-induction">
-          <div class="big-card-name">Midazolam</div>
-          <div class="big-card-class">Alt</div>
-        </div>
+      <div class="single-big-card" id="card-peds-midaz" onclick="giveMed('peds-midaz', 'Midazolam (Peds)', 'p-ml-midaz', 'p-mg-midaz')">
+        <div class="big-card-head peds-induction"><div class="big-card-name">Midazolam</div><div class="big-card-class">Alt Induction</div></div>
         <div class="big-card-body">
-          <div class="big-ml peds-color" id="p-ml-midaz">0</div>
-          <div class="big-ml-unit">mL</div>
+          <div class="big-ml-row"><span class="big-ml peds-color" id="p-ml-midaz">0</span><span class="big-ml-inline-unit">mL</span></div>
           <div class="big-mg" id="p-mg-midaz">0 mg</div>
+          <div class="given-stamp" id="given-peds-midaz" style="display:none;">✓ GIVEN <span id="given-peds-midaz-time">--:--</span></div>
         </div>
         <div class="big-card-foot">0.1 mg/kg · 1 mg/mL</div>
       </div>
 
-      <div class="section-label">Post-Intubation</div>
+      <button class="nav-btn peds-nav" onclick="goToPost('peds')">
+        <div class="nav-btn-title">Post-Intubation →</div>
+        <span class="nav-btn-arrow">›</span>
+      </button>
+
+      <div class="section-label">Quick Post-Intubation</div>
       <div class="big-dose-grid" style="margin-top:8px;">
         <div class="big-dose-col alt-col">
-          <div class="big-card">
-            <div class="big-card-head peds-paralytic">
-              <div class="big-card-name">Fentanyl</div>
-              <div class="big-card-class">Analgesia</div>
-            </div>
+          <div class="big-card" id="card-peds-fen" onclick="giveMed('peds-fen', 'Fentanyl (Peds)', 'p-ml-fen', 'p-mg-fen')">
+            <div class="big-card-head peds-paralytic"><div class="big-card-name">Fentanyl</div><div class="big-card-class">Analgesia</div></div>
             <div class="big-card-body">
-              <div class="big-ml peds-color" id="p-ml-fen">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml peds-color" id="p-ml-fen">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="p-mg-fen">0 mcg</div>
+              <div class="given-stamp" id="given-peds-fen" style="display:none;">✓ GIVEN <span id="given-peds-fen-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1 mcg/kg · 50 mcg/mL</div>
           </div>
         </div>
         <div class="big-dose-col alt-col">
-          <div class="big-card">
-            <div class="big-card-head peds-paralytic">
-              <div class="big-card-name">Ketamine</div>
-              <div class="big-card-class">Sedation</div>
-            </div>
+          <div class="big-card" id="card-peds-ketpost" onclick="giveMed('peds-ketpost', 'Ketamine Post (Peds)', 'p-ml-ketpost', 'p-mg-ketpost')">
+            <div class="big-card-head peds-paralytic"><div class="big-card-name">Ketamine</div><div class="big-card-class">Sedation</div></div>
             <div class="big-card-body">
-              <div class="big-ml peds-color" id="p-ml-ketpost">0</div>
-              <div class="big-ml-unit">mL</div>
+              <div class="big-ml-row"><span class="big-ml peds-color" id="p-ml-ketpost">0</span><span class="big-ml-inline-unit">mL</span></div>
               <div class="big-mg" id="p-mg-ketpost">0 mg</div>
+              <div class="given-stamp" id="given-peds-ketpost" style="display:none;">✓ GIVEN <span id="given-peds-ketpost-time">--:--</span></div>
             </div>
             <div class="big-card-foot">1 mg/kg · 50 mg/mL</div>
           </div>
@@ -1814,13 +844,12 @@
   </div>
 </div>
 
-<!-- ============ POST-INTUBATION ============ -->
+<!-- POST-INTUBATION -->
 <div id="view-post" class="view">
   <div class="view-header post-header">
     <button class="back-btn" onclick="backFromPost()">‹</button>
-    <div class="view-header-text">
-      <div class="view-header-title">Post-Intubation</div>
-    </div>
+    <div class="view-header-text"><div class="view-header-title">Post-Intubation</div></div>
+    <button class="meds-log-btn" onclick="showMedsLog()"><span class="meds-icon">💊</span><span class="meds-count">0</span></button>
   </div>
   <div class="view-body">
 
@@ -1850,62 +879,38 @@
     <div id="post-no-weight" class="no-weight-msg">Enter weight to display doses</div>
 
     <div id="post-doses" style="display:none;">
-      <div class="post-drug-card">
-        <div class="post-drug-head">
-          <div class="post-drug-name">Fentanyl</div>
-          <div class="post-drug-role">Analgesia</div>
-        </div>
+      <div class="post-drug-card" id="card-post-fen" onclick="givePostMed('post-fen', 'Fentanyl Post', 'post-fen-ml', 'post-fen-mcg')">
+        <div class="post-drug-head"><div class="post-drug-name">Fentanyl</div><div class="post-drug-role">Analgesia</div></div>
         <div class="post-drug-body">
-          <div class="post-ml-huge" id="post-fen-ml">0</div>
-          <div class="post-ml-unit-big">mL</div>
-          <div class="post-mg-line">
-            <span id="post-fen-mcg">0 mcg</span>
-            <span id="post-fen-max" style="display:none;" class="post-max-tag">MAX 100 mcg</span>
-          </div>
+          <div class="post-ml-row"><span class="post-ml-huge" id="post-fen-ml">0</span><span class="post-ml-unit-inline">mL</span></div>
+          <div class="post-mg-line"><span id="post-fen-mcg">0 mcg</span><span id="post-fen-max" style="display:none;" class="post-max-tag">MAX 100 mcg</span></div>
+          <div class="post-given-stamp" id="given-post-fen" style="display:none;">✓ GIVEN <span id="given-post-fen-time">--:--</span></div>
         </div>
-        <div class="post-drug-foot">
-          1 mcg/kg · 50 mcg/mL · <strong>q5-10 min PRN x 1 hr</strong>
-        </div>
+        <div class="post-drug-foot">1 mcg/kg · 50 mcg/mL · <strong>q5-10 min PRN x 1 hr</strong></div>
       </div>
 
-      <div class="post-drug-card preferred">
-        <div class="post-drug-head ket-head">
-          <div class="post-drug-name">Ketamine</div>
-          <div class="post-drug-role">★ Sedation</div>
-        </div>
+      <div class="post-drug-card preferred" id="card-post-ket" onclick="givePostMed('post-ket', 'Ketamine Post', 'post-ket-ml', 'post-ket-mg')">
+        <div class="post-drug-head ket-head"><div class="post-drug-name">Ketamine</div><div class="post-drug-role">★ Sedation</div></div>
         <div class="post-drug-body">
-          <div class="post-ml-huge ket-color" id="post-ket-ml">0</div>
-          <div class="post-ml-unit-big">mL</div>
-          <div class="post-mg-line">
-            <span id="post-ket-mg">0 mg</span>
-            <span id="post-ket-max" style="display:none;" class="post-max-tag">MAX 200 mg</span>
-          </div>
+          <div class="post-ml-row"><span class="post-ml-huge ket-color" id="post-ket-ml">0</span><span class="post-ml-unit-inline">mL</span></div>
+          <div class="post-mg-line"><span id="post-ket-mg">0 mg</span><span id="post-ket-max" style="display:none;" class="post-max-tag">MAX 200 mg</span></div>
+          <div class="post-given-stamp" id="given-post-ket" style="display:none;">✓ GIVEN <span id="given-post-ket-time">--:--</span></div>
         </div>
-        <div class="post-drug-foot">
-          1 mg/kg slow push · 50 mg/mL · <strong>q15 min PRN</strong>
-        </div>
+        <div class="post-drug-foot">1 mg/kg slow push · 50 mg/mL · <strong>q15 min PRN</strong></div>
       </div>
     </div>
 
-    <div class="post-drug-card">
-      <div class="post-drug-head midaz-head">
-        <div class="post-drug-name">Midazolam</div>
-        <div class="post-drug-role">Alt Sedation</div>
-      </div>
+    <div class="post-drug-card" id="card-post-midaz" onclick="giveStaticMed('post-midaz', 'Midazolam Post', '5 mg fixed')">
+      <div class="post-drug-head midaz-head"><div class="post-drug-name">Midazolam</div><div class="post-drug-role">Alt Sedation</div></div>
       <div class="post-drug-body">
-        <div class="post-ml-huge midaz-color">5</div>
-        <div class="post-ml-unit-big">mg</div>
-        <div class="post-mg-line" id="post-midaz-bolus" style="font-size: 14px; color: var(--text-muted);">
-          Weight-based bolus alt: <span id="post-midaz-wt">0 mg</span>
-        </div>
+        <div class="post-ml-row"><span class="post-ml-huge midaz-color">5</span><span class="post-ml-unit-inline">mg</span></div>
+        <div class="post-mg-line" id="post-midaz-bolus" style="font-size: 15px; color: var(--text-muted);">Weight-based bolus alt: <span id="post-midaz-wt">0 mg</span></div>
+        <div class="post-given-stamp" id="given-post-midaz" style="display:none;">✓ GIVEN <span id="given-post-midaz-time">--:--</span></div>
       </div>
       <div class="midaz-conc-note">
         <strong>⚠ VERIFY CONCENTRATION:</strong> 5 mg @ 1 mg/mL = <strong>5 mL</strong> · 5 mg @ 5 mg/mL = <strong>1 mL</strong>
       </div>
-      <div class="post-drug-foot">
-        <strong>5 mg IV/IO q15 min x 4, then PRN</strong><br>
-        Alt: 0.05 mg/kg bolus → 0.1 mg/kg/hr pump
-      </div>
+      <div class="post-drug-foot"><strong>5 mg IV/IO q15 min x 4, then PRN</strong><br>Alt: 0.05 mg/kg bolus → 0.1 mg/kg/hr pump</div>
     </div>
 
     <div class="warn-box">
@@ -1942,9 +947,22 @@
   </div>
 </div>
 
-
+<!-- MEDS LOG MODAL -->
+<div id="meds-log-modal" class="meds-modal" style="display:none;" onclick="if(event.target===this)hideMedsLog()">
+  <div class="meds-modal-content">
+    <div class="meds-modal-header">
+      <div class="meds-modal-title">💊 Meds Given</div>
+      <button class="meds-modal-close" onclick="hideMedsLog()">×</button>
+    </div>
+    <div id="meds-list-body"></div>
+    <div class="meds-modal-actions">
+      <button class="close-meds-btn" onclick="hideMedsLog()">CLOSE</button>
+      <button class="clear-meds-btn" onclick="clearMedsLog()">CLEAR ALL</button>
+    </div>
+  </div>
+</div>
 <script>
-  // ===== PEDS DATA with Broselow colors =====
+  // PEDS DATA
   const pedsData = [
     { age: 'TERM',   kg: 3,  ett: '2.5mm',     igel: '1',   length: '16-20"', minIn: 16, maxIn: 20, broselow: 'grey'   },
     { age: '3 MOS',  kg: 5,  ett: '3.0mm',     igel: '1',   length: '20-23"', minIn: 20, maxIn: 23, broselow: 'grey'   },
@@ -1967,7 +985,102 @@
   const presetsLbs = [110, 154, 176, 220, 242, 275, 308, 330];
   const presetsKg  = [50,  70,  80,  100, 110, 125, 140, 150];
 
-  // ===== NAVIGATION =====
+  // MEDS GIVEN STATE
+  let medsGiven = JSON.parse(localStorage.getItem('medsGiven') || '[]');
+
+  function nowTimeStr() {
+    const d = new Date();
+    const h = String(d.getHours()).padStart(2, '0');
+    const m = String(d.getMinutes()).padStart(2, '0');
+    return h + ':' + m;
+  }
+
+  function giveMed(key, drugName, mlElId, mgElId) {
+    const card = document.getElementById('card-' + key);
+    if (card && card.classList.contains('given')) return;
+    const mlEl = document.getElementById(mlElId);
+    const mgEl = document.getElementById(mgElId);
+    if (!mlEl || !mgEl) return;
+    const ml = mlEl.textContent;
+    const mg = mgEl.textContent;
+    if (!ml || ml === '0' || ml === '') return;
+    recordMed(key, drugName, ml + ' mL', mg);
+  }
+
+  function givePostMed(key, drugName, mlElId, mgElId) {
+    const card = document.getElementById('card-' + key);
+    if (card && card.classList.contains('given')) return;
+    const mlEl = document.getElementById(mlElId);
+    const mgEl = document.getElementById(mgElId);
+    if (!mlEl || !mgEl) return;
+    const ml = mlEl.textContent;
+    const mg = mgEl.textContent;
+    if (!ml || ml === '0' || ml === '') return;
+    recordMed(key, drugName, ml + ' mL', mg);
+  }
+
+  function giveStaticMed(key, drugName, dose) {
+    const card = document.getElementById('card-' + key);
+    if (card && card.classList.contains('given')) return;
+    recordMed(key, drugName, dose, '');
+  }
+
+  function recordMed(key, drugName, doseStr, mgStr) {
+    const timeStr = nowTimeStr();
+    medsGiven.push({ key: key, drug: drugName, dose: doseStr, mg: mgStr, time: timeStr, ts: Date.now() });
+    try { localStorage.setItem('medsGiven', JSON.stringify(medsGiven)); } catch(e) {}
+    markCardGiven(key, timeStr);
+    updateMedsCount();
+  }
+
+  function markCardGiven(key, timeStr) {
+    const card = document.getElementById('card-' + key);
+    if (card) card.classList.add('given');
+    const stamp = document.getElementById('given-' + key);
+    if (stamp) {
+      stamp.style.display = 'inline-block';
+      const timeEl = document.getElementById('given-' + key + '-time');
+      if (timeEl) timeEl.textContent = timeStr;
+    }
+  }
+
+  function updateMedsCount() {
+    document.querySelectorAll('.meds-count').forEach(c => { c.textContent = medsGiven.length; });
+  }
+
+  function restoreGivenStates() {
+    medsGiven.forEach(m => markCardGiven(m.key, m.time));
+    updateMedsCount();
+  }
+
+  function showMedsLog() {
+    const body = document.getElementById('meds-list-body');
+    if (medsGiven.length === 0) {
+      body.innerHTML = '<div class="empty-meds">No medications given yet.<br>Tap any med card to log it.</div>';
+    } else {
+      body.innerHTML = medsGiven.map(function(m) {
+        const dose = m.dose + (m.mg ? ' · ' + m.mg : '');
+        return '<div class="med-log-item"><div><div class="med-log-drug">' + m.drug + '</div><div class="med-log-dose">' + dose + '</div></div><div class="med-log-time">' + m.time + '</div></div>';
+      }).join('');
+    }
+    document.getElementById('meds-log-modal').style.display = 'flex';
+  }
+
+  function hideMedsLog() {
+    document.getElementById('meds-log-modal').style.display = 'none';
+  }
+
+  function clearMedsLog() {
+    if (!confirm('Clear all medications given? (Start of new call.)')) return;
+    medsGiven = [];
+    try { localStorage.setItem('medsGiven', '[]'); } catch(e) {}
+    document.querySelectorAll('.big-card.given, .post-drug-card.given, .single-big-card.given').forEach(c => c.classList.remove('given'));
+    document.querySelectorAll('.given-stamp, .post-given-stamp').forEach(s => s.style.display = 'none');
+    updateMedsCount();
+    showMedsLog();
+  }
+
+  // NAVIGATION
   let postBackTarget = 'splash';
 
   function showView(id) {
@@ -1981,6 +1094,7 @@
     document.getElementById('splash').style.display = 'flex';
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     resetTimer();
+    pedsResetTimer();
   }
 
   function goToPost(fromView) {
@@ -1992,6 +1106,9 @@
     } else if (fromView === 'dsi' && dsiCurrentKg) {
       val = document.getElementById('dsi-weight-input').value;
       unit = dsiWeightUnit;
+    } else if (fromView === 'peds' && selectedPedsIndex !== null) {
+      val = pedsData[selectedPedsIndex].kg;
+      unit = 'kg';
     }
     if (val) {
       document.getElementById('post-weight-input').value = val;
@@ -2013,7 +1130,41 @@
   function toggleCheck(el) { el.classList.toggle('checked'); }
   function toggleAcc(id) { document.getElementById(id).classList.toggle('open'); }
 
-  // ===== DSI TIMER =====
+  // AUTO-SCROLL
+  function scrollToDsiVS() {
+    setTimeout(() => {
+      const el = document.getElementById('dsi-vs-banner');
+      if (el && document.getElementById('view-dsi').classList.contains('active')) {
+        el.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }
+    }, 200);
+  }
+  function scrollToDsiTimer() {
+    setTimeout(() => {
+      const el = document.getElementById('dsi-timer-section');
+      if (el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
+    }, 150);
+  }
+  function scrollToCrashDoses() {
+    setTimeout(() => {
+      const el = document.getElementById('dose-content');
+      if (el && el.style.display !== 'none') el.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }, 200);
+  }
+  function scrollToPedsVS() {
+    setTimeout(() => {
+      const el = document.getElementById('peds-vs-banner');
+      if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }, 200);
+  }
+  function scrollToPedsTimer() {
+    setTimeout(() => {
+      const el = document.getElementById('peds-timer-section');
+      if (el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
+    }, 150);
+  }
+
+  // DSI TIMER
   let dsiInterval = null;
   let dsiSeconds = 180;
   let dsiRunning = false;
@@ -2035,7 +1186,6 @@
     display.classList.add('running');
     status.textContent = 'HOLD BOTH TARGETS';
     status.className = 'timer-status show-wait';
-
     dsiInterval = setInterval(() => {
       dsiSeconds--;
       updateTimerDisplay(dsiSeconds);
@@ -2053,10 +1203,7 @@
     }, 1000);
   }
 
-  function manualStartTimer() {
-    // Allows START button to bypass V/S check if user wants
-    startTimer();
-  }
+  function manualStartTimer() { startTimer(); }
 
   function resetTimer() {
     if (dsiInterval) clearInterval(dsiInterval);
@@ -2076,7 +1223,6 @@
     document.getElementById('vs-bp').classList.remove('met');
   }
 
-  // V/S tap - toggle met. Timer ONLY starts when BOTH are met.
   function vsCellTap(which) {
     const cell = document.getElementById(which === 'spo2' ? 'vs-spo2' : 'vs-bp');
     cell.classList.toggle('met');
@@ -2084,12 +1230,82 @@
     const bpOn = document.getElementById('vs-bp').classList.contains('met');
     if (spo2On && bpOn && !dsiRunning && dsiSeconds === 180) {
       startTimer();
+      scrollToDsiTimer();
+    }
+  }
+
+  // PEDS TIMER
+  let pedsInterval = null;
+  let pedsSeconds = 180;
+  let pedsRunning = false;
+
+  function updatePedsTimerDisplay(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    document.getElementById('peds-timer').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  }
+
+  function pedsStartTimer() {
+    if (pedsRunning) return;
+    pedsRunning = true;
+    const display = document.getElementById('peds-timer');
+    const status = document.getElementById('peds-timer-status');
+    const btn = document.getElementById('peds-start-btn');
+    btn.textContent = 'RUNNING';
+    btn.style.opacity = '0.5';
+    display.classList.add('running');
+    status.textContent = 'HOLD BOTH TARGETS';
+    status.className = 'timer-status show-wait';
+    pedsInterval = setInterval(() => {
+      pedsSeconds--;
+      updatePedsTimerDisplay(pedsSeconds);
+      if (pedsSeconds <= 0) {
+        clearInterval(pedsInterval);
+        pedsRunning = false;
+        display.classList.remove('running');
+        display.classList.add('goals-met');
+        display.textContent = '0:00';
+        status.textContent = '✓ 3 MIN MET - PROCEED';
+        status.className = 'timer-status show-go';
+        btn.textContent = 'DONE';
+        btn.style.background = '#1a7a1a';
+      }
+    }, 1000);
+  }
+
+  function pedsManualStart() { pedsStartTimer(); }
+
+  function pedsResetTimer() {
+    if (pedsInterval) clearInterval(pedsInterval);
+    pedsRunning = false;
+    pedsSeconds = 180;
+    updatePedsTimerDisplay(180);
+    const display = document.getElementById('peds-timer');
+    const status = document.getElementById('peds-timer-status');
+    const btn = document.getElementById('peds-start-btn');
+    if (display) display.className = 'timer-display';
+    if (status) { status.textContent = '\u200B'; status.className = 'timer-status'; }
+    if (btn) { btn.textContent = 'START'; btn.style.opacity = '1'; btn.style.background = 'var(--g-accent)'; }
+    const s1 = document.getElementById('peds-vs-spo2');
+    const s2 = document.getElementById('peds-vs-bp');
+    if (s1) s1.classList.remove('met');
+    if (s2) s2.classList.remove('met');
+  }
+
+  function pedsVsCellTap(which) {
+    const cell = document.getElementById(which === 'spo2' ? 'peds-vs-spo2' : 'peds-vs-bp');
+    cell.classList.toggle('met');
+    const spo2On = document.getElementById('peds-vs-spo2').classList.contains('met');
+    const bpOn = document.getElementById('peds-vs-bp').classList.contains('met');
+    if (spo2On && bpOn && !pedsRunning && pedsSeconds === 180) {
+      pedsStartTimer();
+      scrollToPedsTimer();
     }
   }
 
   function round1(n) { return Math.round(n * 10) / 10; }
 
-  // ===== CRASH (ADULT) =====
+  // CRASH
   let weightUnit = 'lbs';
   let currentKg = null;
 
@@ -2112,6 +1328,7 @@
       b.classList.toggle('selected', parseInt(b.textContent) === val);
     });
     calcDoses();
+    scrollToCrashDoses();
   }
 
   function calcDoses() {
@@ -2140,7 +1357,7 @@
     document.getElementById('max-' + id).style.display = maxed ? 'block' : 'none';
   }
 
-  // ===== DSI =====
+  // DSI
   let dsiWeightUnit = 'lbs';
   let dsiCurrentKg = null;
 
@@ -2163,6 +1380,7 @@
       b.classList.toggle('selected', parseInt(b.textContent) === val);
     });
     calcDsiDoses();
+    scrollToDsiVS();
   }
 
   function calcDsiDoses() {
@@ -2191,7 +1409,7 @@
     document.getElementById('dsi-max-' + id).style.display = maxed ? 'block' : 'none';
   }
 
-  // ===== POST-INTUBATION =====
+  // POST-INT
   let postWeightUnit = 'lbs';
 
   function updatePostPresetLabels() {
@@ -2229,23 +1447,20 @@
     const kg = postWeightUnit === 'lbs' ? raw / 2.2046 : raw;
     document.getElementById('post-no-weight').style.display = 'none';
     document.getElementById('post-doses').style.display = 'block';
-
     const fenRaw = round1(kg * 1);
     const fenCap = Math.min(fenRaw, 100);
     document.getElementById('post-fen-ml').textContent = round1(fenCap / 50);
     document.getElementById('post-fen-mcg').textContent = fenCap + ' mcg';
     document.getElementById('post-fen-max').style.display = fenRaw >= 100 ? 'inline-block' : 'none';
-
     const ketRaw = round1(kg * 1);
     const ketCap = Math.min(ketRaw, 200);
     document.getElementById('post-ket-ml').textContent = round1(ketCap / 50);
     document.getElementById('post-ket-mg').textContent = ketCap + ' mg';
     document.getElementById('post-ket-max').style.display = ketRaw >= 200 ? 'inline-block' : 'none';
-
     document.getElementById('post-midaz-wt').textContent = round1(kg * 0.05) + ' mg';
   }
 
-  // ===== PEDS =====
+  // PEDS
   let selectedPedsIndex = null;
 
   function renderPedsAgeGrid() {
@@ -2289,11 +1504,8 @@
     document.getElementById('peds-ett').textContent = p.ett;
     document.getElementById('peds-length').textContent = p.length;
     document.getElementById('peds-igel').textContent = p.igel;
-
-    // Apply broselow color to summary stripe
     const stripe = document.getElementById('peds-broselow');
     stripe.className = 'peds-broselow-stripe bro-' + p.broselow;
-
     const kg = p.kg;
     setPedsDose('p-ml-ket',     'p-mg-ket',     kg * 1,   50, 'mg');
     setPedsDose('p-ml-eto',     'p-mg-eto',     kg * 0.3, 2,  'mg');
@@ -2302,7 +1514,6 @@
     setPedsDose('p-ml-sux',     'p-mg-sux',     kg * 1.5, 20, 'mg');
     setPedsDose('p-ml-fen',     'p-mg-fen',     kg * 1,   50, 'mcg');
     setPedsDose('p-ml-ketpost', 'p-mg-ketpost', kg * 1,   50, 'mg');
-
     setTimeout(() => {
       document.querySelector('.peds-summary').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
@@ -2314,7 +1525,9 @@
     document.getElementById(mgId).textContent = dose + ' ' + unit;
   }
 
+  // INIT
   renderPedsAgeGrid();
+  restoreGivenStates();
 </script>
 </body>
 </html>
