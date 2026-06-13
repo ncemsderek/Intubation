@@ -1,130 +1,80 @@
-# Intubation Guide
+# NCEMS Intubation Guide
 
-A single-file web app for North Country EMS / Clark Fire District 13 crews. Built for the high-stress, low-frequency intubation call where you need the right number on the screen, fast.
+Field airway management reference for North Country EMS / Clark Fire District 13 paramedics. Single-file web app — no build step, no dependencies, hosted on GitHub Pages.
 
-**Live:** [https://ncemsderek.github.io/Intubation/](https://ncemsderek.github.io/Intubation/)
-**Repo:** [https://github.com/ncemsderek/Intubation/](https://github.com/ncemsderek/Intubation/)
-**Source:** 2026 Clark County EMS Patient Care Protocols
+**Current version: v2.0**
 
----
+## Links
 
-## What's in it
+- **Live app:** <https://ncemsderek.github.io/Intubation/>
+- **Repo:** <https://github.com/ncemsderek/Intubation>
+- **Upload new version:** <https://github.com/ncemsderek/Intubation/upload/main>
 
-Four buttons on the splash. Pick one. Weight is the first thing on every page.
+## Files in this repo
 
-### 1. DSI
-The planned advanced airway workflow. Built around resuscitate-before-intubate.
+- `index.html` — the entire app (HTML, CSS, JS in one file)
+- `NCEMS_logo_transparent.png` — logo backdrop on the splash screen
+- `README.md` — this file
 
-- Patient weight at the top — drives every drug dose below
-- V/S targets visible up front: **SpO₂ ≥94%** and **SBP >90 / MAP >65**
-- 3-minute countdown timer — start it when both goals are met
-- Live mL calculations for Ketamine, Etomidate, Rocuronium, Succinylcholine
-- Collapsible sections for Equipment, LEMON Assessment, and Key Considerations
-- Button to jump to Post-Intubation (weight carries over)
+## How to deploy an update (iPhone)
 
-### 2. Adult Crash Airway
-No time. Act now. Patient weight first → four big mL numbers in red.
+1. Save the new `index.html` from Claude to your Files app.
+1. Open the upload link above in **Safari** (not the GitHub app — it can’t upload files).
+1. Tap “choose your files,” pick `index.html`, scroll down, tap **Commit changes**.
+1. Confirm the committed file is named exactly `index.html` (no spaces, no number).
 
-- Etomidate · Ketamine (induction)
-- Succinylcholine · Rocuronium (paralytic)
-- Shock half-dose reminder + Sux/Roc contraindications
-- Button to jump to Post-Intubation
+**iOS cache note:** After every deploy, anyone using the home-screen icon must **delete and re-add it** to see the update. Test in plain Safari first to confirm the new version loaded.
 
-### 3. Peds RSI
-Age-based reference card. Tap an age (TERM through 12 YR) and you get:
+## What’s in the app
 
-- Weight in kg + lbs
-- ETT size + length range
-- iGel size
-- All seven drug doses calculated (Ket, Eto, Midaz, Roc, Sux, post-Ket, post-Fent)
+Four sections from the splash screen:
 
-Pulled from the 2026 Pediatric RSI spreadsheet.
+- **DSI** — Delayed Sequence Intubation: weight-based dosing, Target Vital Signs gate, 3-minute timer, LEMON assessment, Mallampati, equipment checklist, considerations, DOPE troubleshooting
+- **Adult Crash Airway** — weight-based dosing, failure path, DOPE
+- **Peds RSI** — Broselow color-coded age selection or length-based sizing, full peds dosing, integrated Target Vital Signs + timer
+- **Post-Intubation** — Fentanyl / Ketamine / Midazolam dosing with re-dose reminder timers
 
-### 4. Post-Intubation
-Weight at the top, then huge mL numbers for the three sedation/analgesia options.
+## Key features
 
-- **Fentanyl** — 1 mcg/kg, q5–10 min PRN
-- **Ketamine** — 1 mg/kg slow push, q15 min PRN
-- **Midazolam** — 5 mg fixed dose with weight-based bolus alternative (0.05 mg/kg)
-- Concentration warning on Midazolam (1 mg/mL vs 5 mg/mL)
-- Full RASS scale in a collapsible at the bottom
+- **Weight-based dosing** in lbs or kg with quick presets; doses shown in mL (large, next to the number) and mg.
+- **Ketamine + Rocuronium** marked as preferred (red-bordered column).
+- **Tap a med card to log it as given** with a timestamp. Multi-dose supported — tap again to log another dose. Running count on each card.
+- **Meds Given log** — red pill button (top right of every page) shows every dose with time. “Clear All” resets for a new call.
+- **Post-intubation re-dose timers** — per 2026 Clark County protocol: Fentanyl 5 min, Ketamine 15 min, Midazolam 15 min. Card blinks red when it’s time to reassess.
+- **1-hour session reset** — one hour after accepting the warning, the app clears the prior call’s data and returns to the warning page.
+- **Disclaimer / warning page** on first load and after each session.
+- **iPad-optimized** large fonts and high-contrast Target Vital Signs buttons.
 
----
+## Easter egg
 
-## How to use it
+Tap anywhere on the splash background **5 times quickly** → a Bigfoot strides across the bottom of the screen for 3 seconds, then clears.
 
-1. Open the live URL on your phone (or any device)
-2. Tap the section you need from the splash
-3. Enter or tap a preset for patient weight (lbs or kg)
-4. Push the dose displayed in mL — it's already calculated against the right concentration
-5. Verify max-dose flags before pushing (warn banner appears at adult ceilings)
+## Changelog
 
-**Add to home screen** for one-tap launch:
-- iPhone: Safari → Share → Add to Home Screen
-- Android: Chrome → ⋮ → Add to Home screen
+### v2.0
 
-If you ever see a stale version after an update, delete the home-screen icon and re-add.
+- Version checkpoint. Rolls up all changes from the v1.6–v1.9 working sessions into a clean release number.
+- Walking Bigfoot easter egg (profile mid-stride, scissoring legs + swinging arms).
+- 1-hour session reset to the warning page; clears prior call’s meds and timers.
+- Midazolam warning reworded: protocol is based on **5 mg per 5 mL** (1 mg/mL); verify your agency’s concentration.
+- Post-intubation re-dose reminder timers with blink (Fentanyl 5 min, Ketamine 15 min, Midazolam 15 min), confirmed against 2026 Clark County protocol.
+- SF Mono font throughout (replaced Courier New) for cleaner numbers, especially on iPad.
 
----
+### v1.6–v1.9 (folded into v2.0)
 
-## Drug reference
+- Clickable med cards with “GIVEN” timestamp + multi-dose tracking.
+- Meds Given log modal with per-dose timestamps and Clear All.
+- Target Vital Signs renamed + high-contrast tappable buttons.
+- Auto-scroll: weight entry → Target Vital Signs; both VS tapped → timer.
+- Peds page integrated with Target Vital Signs + 3-minute timer + post-intubation nav.
+- Disclaimer / warning page (does not supersede clinical judgment; scope of practice; verify doses; liability).
+- DOPE troubleshooting box on DSI, Crash, and Post-Intubation.
+- mL shown inline next to the number; bigger/bolder fonts; iPad media query.
 
-All weight-based doses use the concentrations from the 2026 Clark County EMS reference card:
+## Protocol basis
 
-| Drug | Dose | Concentration | Adult Max |
-|---|---|---|---|
-| Etomidate | 0.3 mg/kg | 2 mg/mL | 60 mg |
-| Ketamine (induction) | 1 mg/kg | 50 mg/mL | 200 mg |
-| Midazolam (peds induction) | 0.1 mg/kg | 1 mg/mL | — |
-| Succinylcholine | 1.5 mg/kg | 20 mg/mL | 300 mg |
-| Rocuronium | 1.5 mg/kg | 10 mg/mL | 300 mg |
-| Fentanyl (post) | 1 mcg/kg | 50 mcg/mL | 100 mcg |
-| Ketamine (post) | 1 mg/kg | 50 mg/mL | 200 mg |
-| Midazolam (post, fixed) | 5 mg | verify on bottle | — |
+Built on the **2026 Clark County EMS Patient Care Protocols**. Drug concentrations and re-dose intervals reflect that document. Other agencies may stock different concentrations — verify before use.
 
-Peds doses are weight-based with no ceiling applied — no pediatric weight in the spreadsheet (TERM through 12 YR / 36 kg) hits the adult max.
+## Disclaimer
 
----
-
-## Tech notes
-
-- Single HTML file. No build step. No dependencies. No backend.
-- Hosted on GitHub Pages.
-- Works offline once the page has loaded once.
-- Designed for mobile-first use with large tap targets and gloved-hand UX.
-- Forest green agency palette with color coding: green (DSI · post-intubation), red (crash), blue (peds).
-- No data is sent anywhere. Nothing is stored. Refresh resets state.
-
----
-
-## ⚠ Clinical use
-
-This app is a **reference tool** designed to support — not replace — clinical judgment, the printed Clark County protocol manual, and medical control.
-
-- Always verify drug concentrations on the actual vial before drawing.
-- Cross-check critical doses against your printed reference card.
-- Source of truth is the 2026 Clark County EMS Patient Care Protocols (March 2026 revision).
-- Report errors to [maintainer / training admin].
-
----
-
-## Version history
-
-**v1.3** — Splash buttons stripped to bold titles only. Weight is now the first item on every page. "Adult Crash Airway" renamed. DSI page restructured with weight-first and live drug calculations. Trimmed verbose text throughout.
-
-**v1.2** — Added Peds RSI page (age-based, TERM through 12 YR). Added Midazolam card to Post-Intubation with concentration warning.
-
-**v1.1** — Split into four screens (DSI · Crash · Post-Intubation). DSI rebuilt around V/S targets, 3-min timer, and collapsibles for Equipment / LEMON / Considerations. Crash page redesigned with mL-first dose grid.
-
-**v1.0** — Initial build. DSI checklist + Crash dose calculator.
-
----
-
-## Maintainer
-
-Built for NCEMS / FD13. Contact Doug for changes, errors, or protocol updates.
-
-Backbone source files:
-- `2026_Protocols_v1_22.pdf` — Clark County protocols
-- `RSI_ADULT_AND_PEDIATRIC_6_2026.xlsx` — Drug concentration / weight reference
-- `dsi_rsi_check_list_publisher.pdf` — Existing DSI checklist
+This is a reference tool only. It does not supersede clinical judgment. Do not work outside your scope of practice. Verify all doses, concentrations, and protocols against your service’s current standards before administration.
