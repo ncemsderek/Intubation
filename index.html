@@ -483,15 +483,25 @@
     100% { left: calc(100vw + 20px); }
   }
   .squatch-svg {
-    width: 140px;
-    height: 180px;
-    animation: squatchBob 0.5s ease-in-out infinite alternate;
+    width: 150px;
+    height: 190px;
+    animation: squatchBob 0.45s ease-in-out infinite alternate;
     filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+    overflow: visible;
   }
   @keyframes squatchBob {
-    from { transform: translateY(0px) scaleX(1); }
-    to   { transform: translateY(-6px) scaleX(1); }
+    from { transform: translateY(0px); }
+    to   { transform: translateY(-5px); }
   }
+  /* Walking limbs - scissor stride */
+  .sq-leg-front { transform-origin: 70px 150px; animation: legFront 0.45s ease-in-out infinite alternate; }
+  .sq-leg-back  { transform-origin: 70px 150px; animation: legBack 0.45s ease-in-out infinite alternate; }
+  .sq-arm-front { transform-origin: 95px 88px; animation: armFront 0.45s ease-in-out infinite alternate; }
+  .sq-arm-back  { transform-origin: 45px 88px; animation: armBack 0.45s ease-in-out infinite alternate; }
+  @keyframes legFront { from { transform: rotate(18deg); } to { transform: rotate(-16deg); } }
+  @keyframes legBack  { from { transform: rotate(-16deg); } to { transform: rotate(18deg); } }
+  @keyframes armFront { from { transform: rotate(-20deg); } to { transform: rotate(18deg); } }
+  @keyframes armBack  { from { transform: rotate(18deg); } to { transform: rotate(-20deg); } }
   .squatch-tap-hint {
     position: fixed;
     bottom: 110px;
@@ -1820,44 +1830,54 @@
     wrap.id = 'squatch-wrap';
     wrap.className = 'squatch-container';
     wrap.innerHTML = `
-      <svg class="squatch-svg" viewBox="0 0 140 200" xmlns="http://www.w3.org/2000/svg">
-        <!-- Body -->
-        <ellipse cx="70" cy="115" rx="38" ry="52" fill="#1a1a0a"/>
-        <!-- Head -->
-        <ellipse cx="70" cy="52" rx="28" ry="30" fill="#1a1a0a"/>
-        <!-- Brow ridge -->
-        <ellipse cx="70" cy="44" rx="24" ry="10" fill="#111108"/>
-        <!-- Eyes glow -->
-        <circle cx="62" cy="48" r="4" fill="#c8a020" opacity="0.9"/>
-        <circle cx="78" cy="48" r="4" fill="#c8a020" opacity="0.9"/>
-        <circle cx="63" cy="47" r="1.5" fill="#fff" opacity="0.6"/>
-        <circle cx="79" cy="47" r="1.5" fill="#fff" opacity="0.6"/>
-        <!-- Nose -->
-        <ellipse cx="70" cy="58" rx="6" ry="4" fill="#111"/>
-        <!-- Shoulders wide -->
-        <ellipse cx="70" cy="82" rx="46" ry="16" fill="#1a1a0a"/>
-        <!-- Left arm -->
-        <path d="M 30 85 Q 10 110 18 148" stroke="#1a1a0a" stroke-width="16" fill="none" stroke-linecap="round"/>
-        <!-- Right arm -->
-        <path d="M 110 85 Q 130 110 122 148" stroke="#1a1a0a" stroke-width="16" fill="none" stroke-linecap="round"/>
-        <!-- Left hand -->
-        <ellipse cx="18" cy="152" rx="10" ry="7" fill="#1a1a0a"/>
-        <!-- Right hand -->
-        <ellipse cx="122" cy="152" rx="10" ry="7" fill="#1a1a0a"/>
-        <!-- Left leg -->
-        <path d="M 52 162 Q 44 182 40 200" stroke="#1a1a0a" stroke-width="18" fill="none" stroke-linecap="round"/>
-        <!-- Right leg -->
-        <path d="M 88 162 Q 96 182 100 200" stroke="#1a1a0a" stroke-width="18" fill="none" stroke-linecap="round"/>
-        <!-- Left foot -->
-        <ellipse cx="38" cy="198" rx="16" ry="7" fill="#1a1a0a"/>
-        <!-- Right foot -->
-        <ellipse cx="102" cy="198" rx="16" ry="7" fill="#1a1a0a"/>
-        <!-- Fur texture lines -->
-        <path d="M 58 70 Q 55 85 52 100" stroke="#2a2a15" stroke-width="2" fill="none" opacity="0.5"/>
-        <path d="M 70 68 Q 70 84 70 100" stroke="#2a2a15" stroke-width="2" fill="none" opacity="0.5"/>
-        <path d="M 82 70 Q 85 85 88 100" stroke="#2a2a15" stroke-width="2" fill="none" opacity="0.5"/>
-        <path d="M 45 88 Q 38 98 35 110" stroke="#2a2a15" stroke-width="2" fill="none" opacity="0.5"/>
-        <path d="M 95 88 Q 102 98 105 110" stroke="#2a2a15" stroke-width="2" fill="none" opacity="0.5"/>
+      <svg class="squatch-svg" viewBox="0 0 150 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Facing right, classic Patterson mid-stride profile -->
+        <!-- BACK LEG (drawn first, behind body) -->
+        <g class="sq-leg-back">
+          <path d="M 68 120 Q 60 150 55 178" stroke="#15150a" stroke-width="22" fill="none" stroke-linecap="round"/>
+          <!-- back foot -->
+          <path d="M 44 184 Q 44 176 56 176 L 70 178 Q 74 184 68 188 L 48 188 Q 43 188 44 184 Z" fill="#15150a"/>
+        </g>
+        <!-- BACK ARM (behind torso) -->
+        <g class="sq-arm-back">
+          <path d="M 60 86 Q 48 112 50 138" stroke="#15150a" stroke-width="17" fill="none" stroke-linecap="round"/>
+          <ellipse cx="50" cy="140" rx="9" ry="11" fill="#15150a"/>
+        </g>
+
+        <!-- TORSO - hunched, broad shoulders tapering down -->
+        <path d="M 52 70 Q 48 60 58 54 L 92 54 Q 104 60 100 74
+                 Q 104 100 92 128 Q 80 140 64 134 Q 52 120 50 95 Z" fill="#1c1c0d"/>
+        <!-- chest/belly shading -->
+        <path d="M 70 72 Q 64 100 70 130 Q 80 132 86 124 Q 92 100 88 74 Z" fill="#22220f" opacity="0.6"/>
+
+        <!-- HEAD - sloped forehead, no neck, sagittal crest peak -->
+        <path d="M 88 30 Q 102 32 104 46 Q 106 58 96 64 L 78 64 Q 70 58 72 44 Q 74 32 88 30 Z" fill="#1c1c0d"/>
+        <!-- brow ridge -->
+        <path d="M 92 44 Q 104 44 104 50 Q 100 54 92 52 Z" fill="#15150a"/>
+        <!-- eye glow -->
+        <circle cx="96" cy="47" r="2.6" fill="#c8a020" opacity="0.95"/>
+        <circle cx="96.5" cy="46.3" r="1" fill="#fff" opacity="0.6"/>
+        <!-- brow/jaw line -->
+        <path d="M 78 60 Q 88 64 98 60" stroke="#15150a" stroke-width="2.5" fill="none" opacity="0.7"/>
+
+        <!-- FRONT LEG -->
+        <g class="sq-leg-front">
+          <path d="M 78 120 Q 86 150 92 178" stroke="#1f1f0e" stroke-width="23" fill="none" stroke-linecap="round"/>
+          <!-- front foot (big, flat) -->
+          <path d="M 80 184 Q 80 175 94 175 L 112 178 Q 117 184 110 189 L 86 189 Q 79 189 80 184 Z" fill="#1f1f0e"/>
+        </g>
+        <!-- FRONT ARM (in front of torso, long, swinging) -->
+        <g class="sq-arm-front">
+          <path d="M 90 86 Q 104 112 100 142" stroke="#1f1f0e" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <ellipse cx="100" cy="144" rx="10" ry="12" fill="#1f1f0e"/>
+        </g>
+
+        <!-- fur texture wisps on torso -->
+        <path d="M 58 78 Q 54 96 56 116" stroke="#2c2c16" stroke-width="2" fill="none" opacity="0.45"/>
+        <path d="M 72 74 Q 70 98 74 124" stroke="#2c2c16" stroke-width="2" fill="none" opacity="0.4"/>
+        <path d="M 88 78 Q 92 96 88 118" stroke="#2c2c16" stroke-width="2" fill="none" opacity="0.45"/>
+        <!-- shaggy outline ticks along the back -->
+        <path d="M 52 70 l -4 -3 M 50 84 l -5 -1 M 50 100 l -5 0 M 52 116 l -5 2" stroke="#1c1c0d" stroke-width="3" stroke-linecap="round"/>
       </svg>`;
     document.body.appendChild(wrap);
     // Clean up after the 3-second walk completes
