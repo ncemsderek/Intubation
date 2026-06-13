@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>NCEMS Intubation Guide v2.0</title>
+<title>NCEMS Intubation Guide v2.1</title>
 <style>
   :root {
     --g-deep: #1C3A1C;
@@ -43,7 +43,8 @@
   .splash-btn.post { background: linear-gradient(135deg, #1C3A1C 0%, #2E6B2E 100%); box-shadow: 0 6px 24px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); }
   .splash-btn.peds { background: linear-gradient(135deg, #1C3A55 0%, #4A7CB0 100%); box-shadow: 0 6px 24px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); }
   .splash-btn-title { position: relative; z-index: 1; font-size: clamp(28px, 7vw, 36px); font-weight: 800; color: #fff; text-align: center; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.1; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
-  .splash-version { margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.3); font-family: 'SF Mono', ui-monospace, 'Cascadia Code', 'Menlo', monospace; letter-spacing: 2px; cursor: pointer; padding: 12px 24px; -webkit-tap-highlight-color: transparent; }
+  .splash-version { margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; font-family: 'SF Mono', ui-monospace, 'Cascadia Code', 'Menlo', monospace; letter-spacing: 1px; cursor: pointer; padding: 10px 18px; -webkit-tap-highlight-color: transparent; }
+  .splash-version:active { background: rgba(255,255,255,0.18); }
 
   /* VIEW + HEADER + MEDS LOG BUTTON */
   .view { display: none; min-height: 100vh; flex-direction: column; }
@@ -330,6 +331,61 @@
   .empty-meds { text-align: center; padding: 40px 20px; color: var(--text-muted); font-family: 'SF Mono', ui-monospace, 'Cascadia Code', 'Menlo', monospace; font-size: 13px; letter-spacing: 1px; }
   .spacer-lg { height: 28px; }
 
+  /* ADMIN / CONCENTRATIONS */
+  .admin-note { margin: 16px 16px 0; background: #fff8e8; border: 1px solid #f0c060; color: #7a5000; border-radius: 8px; padding: 12px 14px; font-family: 'SF Mono', ui-monospace, 'Menlo', monospace; font-size: 13px; line-height: 1.5; }
+  .conc-table { margin: 14px 16px 0; background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .conc-row { display: grid; grid-template-columns: 1.4fr 1fr 1.2fr 0.9fr; gap: 6px; padding: 12px 12px; border-bottom: 1px solid #f0f0f0; font-family: 'SF Mono', ui-monospace, 'Menlo', monospace; font-size: 13px; align-items: center; }
+  .conc-row:last-child { border-bottom: none; }
+  .conc-head { background: var(--g-deep); color: white; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 800; }
+  .conc-drug { font-weight: 800; color: var(--g-deep); }
+  .conc-sub { color: var(--text-muted); font-size: 11px; }
+  .admin-foot { margin: 14px 16px 0; background: #fdeaea; border: 1px solid var(--bad); color: #7a0000; border-radius: 8px; padding: 12px 14px; font-family: 'SF Mono', ui-monospace, 'Menlo', monospace; font-size: 13px; line-height: 1.5; }
+
+  /* TIMER MET NOTICE (blink, like redose) */
+  .timer-inline.timer-met { animation: timerMetBlink 1s ease-in-out infinite; }
+  @keyframes timerMetBlink {
+    0%, 100% { background: #fff; border-color: var(--border); }
+    50%      { background: #d4f5d4; border-color: var(--g-accent); }
+  }
+  .timer-met-banner {
+    margin-top: 10px;
+    background: var(--g-accent);
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-family: 'SF Mono', ui-monospace, 'Menlo', monospace;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    display: none;
+    animation: timerBannerPulse 1s ease-in-out infinite;
+  }
+  .timer-inline.timer-met .timer-met-banner { display: block; }
+  @keyframes timerBannerPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+
+  /* MEDS LOG DELETE X */
+  .med-log-del {
+    background: var(--bad);
+    color: white;
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .med-log-del:active { opacity: 0.8; }
+  .med-log-item { grid-template-columns: 1fr auto auto !important; }
+
+  /* MIDAZ ? BUTTON */
+  .midaz-q-row { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 12px 0; font-family: 'SF Mono', ui-monospace, 'Menlo', monospace; font-size: 14px; font-weight: 800; color: var(--text); }
+  .midaz-q-btn { background: var(--warn); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 17px; font-weight: 800; cursor: pointer; -webkit-tap-highlight-color: transparent; line-height: 1; }
+  .midaz-q-btn:active { opacity: 0.8; }
+
   /* WEIGHT - bold + big */
   .weight-input { font-weight: 900 !important; }
 
@@ -557,7 +613,7 @@
     <button class="splash-btn peds" onclick="event.stopPropagation();showView('peds')"><div class="splash-btn-title">Peds RSI</div></button>
     <button class="splash-btn post" onclick="event.stopPropagation();showView('post')"><div class="splash-btn-title">Post-Intubation</div></button>
   </div>
-  <div class="splash-version">v2.0</div>
+  <div class="splash-version" onclick="event.stopPropagation();showView('admin')">v2.1 · ⓘ Verify Concentrations</div>
 </div>
 
 <!-- DSI -->
@@ -572,8 +628,8 @@
     <div class="weight-section">
       <div class="weight-label">Patient Weight</div>
       <div class="weight-toggle-row">
-        <button class="weight-unit-btn active" id="dsi-unit-lbs" onclick="setDsiUnit('lbs')">LBS</button>
-        <button class="weight-unit-btn" id="dsi-unit-kg" onclick="setDsiUnit('kg')">KG</button>
+        <button class="weight-unit-btn" id="dsi-unit-lbs" onclick="setDsiUnit('lbs')">LBS</button>
+        <button class="weight-unit-btn active" id="dsi-unit-kg" onclick="setDsiUnit('kg')">KG</button>
       </div>
       <div class="weight-input-row">
         <input type="text" inputmode="decimal" pattern="[0-9]*" class="weight-input" id="dsi-weight-input" placeholder="0" oninput="calcDsiDoses()" onkeydown="if(event.key==='Enter'){this.blur();calcDsiDoses();scrollToDsiVS();}">
@@ -615,6 +671,7 @@
         <button class="timer-btn reset" onclick="resetTimer()">RESET</button>
       </div>
       <div class="timer-status" id="dsi-timer-status">​</div>
+      <div class="timer-met-banner">✓ 3 MIN MET — PROCEED</div>
     </div>
 
     <div id="dsi-no-weight" class="no-weight-msg">Enter weight to display doses</div>
@@ -790,8 +847,8 @@
     <div class="weight-section">
       <div class="weight-label">Patient Weight</div>
       <div class="weight-toggle-row">
-        <button class="weight-unit-btn active" id="unit-lbs" onclick="setUnit('lbs')">LBS</button>
-        <button class="weight-unit-btn" id="unit-kg" onclick="setUnit('kg')">KG</button>
+        <button class="weight-unit-btn" id="unit-lbs" onclick="setUnit('lbs')">LBS</button>
+        <button class="weight-unit-btn active" id="unit-kg" onclick="setUnit('kg')">KG</button>
       </div>
       <div class="weight-input-row">
         <input type="text" inputmode="decimal" pattern="[0-9]*" class="weight-input" id="weight-input" placeholder="0" oninput="calcDoses()" onkeydown="if(event.key==='Enter'){this.blur();calcDoses();scrollToCrashDoses();}">
@@ -949,6 +1006,7 @@
           <button class="timer-btn reset" onclick="pedsResetTimer()">RESET</button>
         </div>
         <div class="timer-status" id="peds-timer-status">​</div>
+        <div class="timer-met-banner">✓ 3 MIN MET — PROCEED</div>
       </div>
 
       <div class="big-dose-grid">
@@ -1066,8 +1124,8 @@
     <div class="weight-section">
       <div class="weight-label">Patient Weight</div>
       <div class="weight-toggle-row">
-        <button class="weight-unit-btn active" id="post-unit-lbs" onclick="setPostUnit('lbs')">LBS</button>
-        <button class="weight-unit-btn" id="post-unit-kg" onclick="setPostUnit('kg')">KG</button>
+        <button class="weight-unit-btn" id="post-unit-lbs" onclick="setPostUnit('lbs')">LBS</button>
+        <button class="weight-unit-btn active" id="post-unit-kg" onclick="setPostUnit('kg')">KG</button>
       </div>
       <div class="weight-input-row">
         <input type="text" inputmode="decimal" pattern="[0-9]*" class="weight-input" id="post-weight-input" placeholder="0" oninput="calcPostDoses()" onkeydown="if(event.key==='Enter'){this.blur();calcPostDoses();}">
@@ -1120,7 +1178,11 @@
         <div class="post-given-stamp" id="given-post-midaz" style="display:none;">✓ GIVEN <span id="given-post-midaz-time">--:--</span></div>
         <div class="redose-badge" id="redose-post-midaz" style="display:none;"><span class="redose-label">Re-dose timer</span><span id="redose-post-midaz-time">15:00</span></div>
       </div>
-      <div class="midaz-conc-note">
+      <div class="midaz-q-row" onclick="event.stopPropagation()">
+        Concentration: 1 mg/mL
+        <button class="midaz-q-btn" onclick="event.stopPropagation();toggleMidazWarn()">?</button>
+      </div>
+      <div class="midaz-conc-note" id="midaz-warn" style="display:none;">
         <strong>⚠ WARNING:</strong> This protocol is based off of <strong>5 mg per 5 mL</strong> (1 mg/mL). Verify your agency's concentration before drawing up — other agencies may stock different.
       </div>
       <div class="post-drug-foot"><strong>5 mg IV/IO q15 min x 4, then PRN</strong><br>Alt: 0.05 mg/kg bolus → 0.1 mg/kg/hr pump</div>
@@ -1166,6 +1228,28 @@
       </div></div>
     </div>
 
+    <div class="spacer-lg"></div>
+  </div>
+</div>
+
+<!-- ADMIN / CONCENTRATIONS -->
+<div id="view-admin" class="view">
+  <div class="view-header" style="background:#222;">
+    <button class="back-btn" onclick="showSplash()">‹</button>
+    <div class="view-header-text"><div class="view-header-title">Concentrations</div></div>
+  </div>
+  <div class="view-body">
+    <div class="admin-note">Verify these against your agency's stock before use. Based on 2026 Clark County EMS Patient Care Protocols.</div>
+    <div class="conc-table">
+      <div class="conc-row conc-head"><div>Drug</div><div>Conc.</div><div>Dose</div><div>Max</div></div>
+      <div class="conc-row"><div class="conc-drug">Ketamine</div><div>50 mg/mL</div><div>1 mg/kg</div><div>200 mg</div></div>
+      <div class="conc-row"><div class="conc-drug">Rocuronium</div><div>10 mg/mL</div><div>1.5 mg/kg</div><div>300 mg</div></div>
+      <div class="conc-row"><div class="conc-drug">Etomidate</div><div>2 mg/mL</div><div>0.3 mg/kg</div><div>60 mg</div></div>
+      <div class="conc-row"><div class="conc-drug">Succinylcholine</div><div>20 mg/mL</div><div>1.5 mg/kg</div><div>300 mg</div></div>
+      <div class="conc-row"><div class="conc-drug">Fentanyl</div><div>50 mcg/mL</div><div>1 mcg/kg</div><div>100 mcg</div></div>
+      <div class="conc-row"><div class="conc-drug">Midazolam</div><div>1 mg/mL<br><span class="conc-sub">(5 mg / 5 mL)</span></div><div>5 mg post<br>0.1 mg/kg peds</div><div>—</div></div>
+    </div>
+    <div class="admin-foot">If your agency stocks a different concentration (e.g. Midazolam 5 mg/mL), the mL volumes in this app will be wrong. Confirm before administration.</div>
     <div class="spacer-lg"></div>
   </div>
 </div>
@@ -1218,6 +1302,24 @@
     return h + ':' + m;
   }
 
+  // Max-dose warning on repeat dosing (per 2026 protocol)
+  function getDrugMax(name) {
+    if (name.indexOf('Ketamine') === 0)        return { drug: 'Ketamine', max: '200 mg' };
+    if (name.indexOf('Rocuronium') === 0)      return { drug: 'Rocuronium', max: '300 mg' };
+    if (name.indexOf('Etomidate') === 0)       return { drug: 'Etomidate', max: '60 mg' };
+    if (name.indexOf('Succinylcholine') === 0) return { drug: 'Succinylcholine', max: '300 mg' };
+    if (name.indexOf('Midazolam') === 0)       return { drug: 'Midazolam', max: '5 mg per dose (q15 min × 4, then PRN)' };
+    return null;
+  }
+  // Returns true if OK to proceed, false if the medic cancels.
+  function maxDoseOk(key, drugName) {
+    const alreadyGiven = medsGiven.filter(m => m.key === key).length;
+    if (alreadyGiven < 1) return true; // first dose is capped at max, no warning
+    const info = getDrugMax(drugName);
+    if (!info) return true;
+    return confirm('⚠ You may have met the maximum dosage for ' + info.drug + '.\n\nProtocol max: ' + info.max + '. The first dose may have already reached it.\n\nGive another dose anyway?');
+  }
+
   function giveMed(key, drugName, mlElId, mgElId) {
     const mlEl = document.getElementById(mlElId);
     const mgEl = document.getElementById(mgElId);
@@ -1225,6 +1327,7 @@
     const ml = mlEl.textContent;
     const mg = mgEl.textContent;
     if (!ml || ml === '0' || ml === '') return;
+    if (!maxDoseOk(key, drugName)) return;
     recordMed(key, drugName, ml + ' mL', mg);
   }
 
@@ -1235,13 +1338,20 @@
     const ml = mlEl.textContent;
     const mg = mgEl.textContent;
     if (!ml || ml === '0' || ml === '') return;
+    if (!maxDoseOk(key, drugName)) return;
     recordMed(key, drugName, ml + ' mL', mg);
     startRedose(key);
   }
 
   function giveStaticMed(key, drugName, dose) {
+    if (!maxDoseOk(key, drugName)) return;
     recordMed(key, drugName, dose, '');
     startRedose(key);
+  }
+
+  function toggleMidazWarn() {
+    const w = document.getElementById('midaz-warn');
+    if (w) w.style.display = (w.style.display === 'none' || !w.style.display) ? 'block' : 'none';
   }
 
   function recordMed(key, drugName, doseStr, mgStr) {
@@ -1327,12 +1437,37 @@
     if (medsGiven.length === 0) {
       body.innerHTML = '<div class="empty-meds">No medications given yet.<br>Tap any med card to log it.</div>';
     } else {
-      body.innerHTML = medsGiven.map(function(m) {
+      body.innerHTML = medsGiven.map(function(m, idx) {
         const dose = m.dose + (m.mg ? ' · ' + m.mg : '');
-        return '<div class="med-log-item"><div><div class="med-log-drug">' + m.drug + '</div><div class="med-log-dose">' + dose + '</div></div><div class="med-log-time">' + m.time + '</div></div>';
+        return '<div class="med-log-item"><div><div class="med-log-drug">' + m.drug + '</div><div class="med-log-dose">' + dose + '</div></div><div class="med-log-time">' + m.time + '</div><button class="med-log-del" onclick="deleteMed(' + idx + ')">×</button></div>';
       }).join('');
     }
     document.getElementById('meds-log-modal').style.display = 'flex';
+  }
+
+  function deleteMed(idx) {
+    const m = medsGiven[idx];
+    if (!m) return;
+    const key = m.key;
+    medsGiven.splice(idx, 1);
+    try { localStorage.setItem('medsGiven', JSON.stringify(medsGiven)); } catch(e) {}
+    // If no more doses of this drug remain, clear its given stamp/card + redose timer
+    const stillGiven = medsGiven.some(x => x.key === key);
+    if (!stillGiven) {
+      const card = document.getElementById('card-' + key);
+      if (card) card.classList.remove('given', 'redose-due');
+      const stamp = document.getElementById('given-' + key);
+      if (stamp) stamp.style.display = 'none';
+      const badge = document.getElementById('redose-' + key);
+      if (badge) badge.style.display = 'none';
+      if (redoseTimers[key]) { clearInterval(redoseTimers[key].interval); }
+    } else {
+      // refresh the count text on the remaining card stamp
+      const last = [...medsGiven].reverse().find(x => x.key === key);
+      if (last) markCardGiven(key, last.time);
+    }
+    updateMedsCount();
+    showMedsLog();
   }
 
   function hideMedsLog() {
@@ -1340,14 +1475,14 @@
   }
 
   function clearMedsLog() {
-    if (!confirm('Clear all medications given? (Start of new call.)')) return;
+    if (!confirm('Clear ALL medications given? (Start of new call.)')) return;
     medsGiven = [];
     try { localStorage.setItem('medsGiven', '[]'); } catch(e) {}
     document.querySelectorAll('.big-card.given, .post-drug-card.given, .single-big-card.given').forEach(c => c.classList.remove('given'));
     document.querySelectorAll('.given-stamp, .post-given-stamp').forEach(s => s.style.display = 'none');
     clearAllRedose();
     updateMedsCount();
-    showMedsLog();
+    hideMedsLog();
   }
 
   // NAVIGATION
@@ -1465,8 +1600,9 @@
         display.classList.remove('running');
         display.classList.add('goals-met');
         display.textContent = '0:00';
-        status.textContent = '✓ 3 MIN MET - PROCEED';
-        status.className = 'timer-status show-go';
+        status.textContent = '\u200B';
+        status.className = 'timer-status';
+        document.getElementById('dsi-timer-section').classList.add('timer-met');
         btn.textContent = 'DONE';
         btn.style.background = '#1a7a1a';
       }
@@ -1486,6 +1622,7 @@
     display.className = 'timer-display';
     status.textContent = '\u200B';
     status.className = 'timer-status';
+    document.getElementById('dsi-timer-section').classList.remove('timer-met');
     btn.textContent = 'START';
     btn.style.opacity = '1';
     btn.style.background = 'var(--g-accent)';
@@ -1535,8 +1672,9 @@
         display.classList.remove('running');
         display.classList.add('goals-met');
         display.textContent = '0:00';
-        status.textContent = '✓ 3 MIN MET - PROCEED';
-        status.className = 'timer-status show-go';
+        status.textContent = '\u200B';
+        status.className = 'timer-status';
+        document.getElementById('peds-timer-section').classList.add('timer-met');
         btn.textContent = 'DONE';
         btn.style.background = '#1a7a1a';
       }
@@ -1555,6 +1693,8 @@
     const btn = document.getElementById('peds-start-btn');
     if (display) display.className = 'timer-display';
     if (status) { status.textContent = '\u200B'; status.className = 'timer-status'; }
+    const sec = document.getElementById('peds-timer-section');
+    if (sec) sec.classList.remove('timer-met');
     if (btn) { btn.textContent = 'START'; btn.style.opacity = '1'; btn.style.background = 'var(--g-accent)'; }
     const s1 = document.getElementById('peds-vs-spo2');
     const s2 = document.getElementById('peds-vs-bp');
@@ -1576,7 +1716,7 @@
   function round1(n) { return Math.round(n * 10) / 10; }
 
   // CRASH
-  let weightUnit = 'lbs';
+  let weightUnit = 'kg';
   let currentKg = null;
 
   function setUnit(unit) {
@@ -1587,8 +1727,7 @@
     const btns = document.querySelectorAll('#preset-row .preset-btn');
     const vals = unit === 'lbs' ? presetsLbs : presetsKg;
     btns.forEach((b, i) => { b.textContent = vals[i]; b.onclick = () => setPreset(vals[i]); });
-    document.getElementById('weight-input').value = '';
-    currentKg = null;
+    // Keep whatever number was entered; recalc in the new unit
     calcDoses();
   }
 
@@ -1628,7 +1767,7 @@
   }
 
   // DSI
-  let dsiWeightUnit = 'lbs';
+  let dsiWeightUnit = 'kg';
   let dsiCurrentKg = null;
 
   function setDsiUnit(unit) {
@@ -1639,8 +1778,7 @@
     const btns = document.querySelectorAll('#dsi-preset-row .preset-btn');
     const vals = unit === 'lbs' ? presetsLbs : presetsKg;
     btns.forEach((b, i) => { b.textContent = vals[i]; b.onclick = () => setDsiPreset(vals[i]); });
-    document.getElementById('dsi-weight-input').value = '';
-    dsiCurrentKg = null;
+    // Keep whatever number was entered; recalc in the new unit
     calcDsiDoses();
   }
 
@@ -1680,7 +1818,7 @@
   }
 
   // POST-INT
-  let postWeightUnit = 'lbs';
+  let postWeightUnit = 'kg';
 
   function updatePostPresetLabels() {
     const btns = document.querySelectorAll('#post-preset-row .preset-btn');
@@ -1694,7 +1832,7 @@
     document.getElementById('post-unit-kg').classList.toggle('active', unit === 'kg');
     document.getElementById('post-unit-display').textContent = unit;
     updatePostPresetLabels();
-    document.getElementById('post-weight-input').value = '';
+    // Keep whatever number was entered; recalc in the new unit
     calcPostDoses();
   }
 
@@ -1929,6 +2067,10 @@
   // INIT
   renderPedsAgeGrid();
   restoreGivenStates();
+  // Default all weight sections to kg (populates presets, labels, active state)
+  setDsiUnit('kg');
+  setUnit('kg');
+  setPostUnit('kg');
 </script>
 </body>
 </html>
