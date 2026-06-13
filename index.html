@@ -6,7 +6,12 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>NCEMS Intubation Guide v2.1</title>
+<title>NCEMS Intubation Guide v2.3</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Intubation">
 <style>
   :root {
     --g-deep: #1C3A1C;
@@ -340,6 +345,42 @@
   .conc-drug { font-weight: 800; color: var(--g-deep); }
   .conc-sub { color: var(--text-muted); font-size: 11px; }
   .admin-foot { margin: 14px 16px 0; background: #fdeaea; border: 1px solid var(--bad); color: #7a0000; border-radius: 8px; padding: 12px 14px; font-family: 'SF Mono', ui-monospace, 'Menlo', monospace; font-size: 13px; line-height: 1.5; }
+  .admin-contact { margin: 14px 16px 0; text-align: center; font-family: 'SF Mono', ui-monospace, 'Menlo', monospace; font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+  .admin-contact a { color: var(--g-mid); font-weight: 800; text-decoration: none; }
+  .admin-contact a:active { opacity: 0.7; }
+
+  /* RED POPUP (Midazolam ? warning) */
+  .red-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 4000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+  }
+  .red-popup-overlay.show { display: flex; }
+  .red-popup-box {
+    background: var(--bad);
+    color: white;
+    border: 3px solid #fff;
+    border-radius: 14px;
+    padding: 24px 22px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    font-family: 'SF Mono', ui-monospace, 'Menlo', monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  }
+  .red-popup-box strong { display: block; font-size: 18px; letter-spacing: 1px; margin-bottom: 10px; }
+  .red-popup-tap { margin-top: 14px; font-size: 12px; opacity: 0.8; letter-spacing: 1px; }
+  .maxdose-btn { border: none; border-radius: 10px; padding: 15px; font-family: 'SF Mono', ui-monospace, 'Menlo', monospace; font-size: 15px; font-weight: 800; letter-spacing: 1px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .maxdose-btn.give { background: #fff; color: var(--bad-deep); }
+  .maxdose-btn.back { background: rgba(0,0,0,0.25); color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+  .maxdose-btn:active { opacity: 0.8; }
 
   /* TIMER MET NOTICE (blink, like redose) */
   .timer-inline.timer-met { animation: timerMetBlink 1s ease-in-out infinite; }
@@ -613,7 +654,7 @@
     <button class="splash-btn peds" onclick="event.stopPropagation();showView('peds')"><div class="splash-btn-title">Peds RSI</div></button>
     <button class="splash-btn post" onclick="event.stopPropagation();showView('post')"><div class="splash-btn-title">Post-Intubation</div></button>
   </div>
-  <div class="splash-version" onclick="event.stopPropagation();showView('admin')">v2.1 · ⓘ Verify Concentrations</div>
+  <div class="splash-version" onclick="event.stopPropagation();showView('admin')">v2.3 · ⓘ Verify Concentrations</div>
 </div>
 
 <!-- DSI -->
@@ -1180,10 +1221,7 @@
       </div>
       <div class="midaz-q-row" onclick="event.stopPropagation()">
         Concentration: 1 mg/mL
-        <button class="midaz-q-btn" onclick="event.stopPropagation();toggleMidazWarn()">?</button>
-      </div>
-      <div class="midaz-conc-note" id="midaz-warn" style="display:none;">
-        <strong>⚠ WARNING:</strong> This protocol is based off of <strong>5 mg per 5 mL</strong> (1 mg/mL). Verify your agency's concentration before drawing up — other agencies may stock different.
+        <button class="midaz-q-btn" onclick="event.stopPropagation();openRedPopup()">?</button>
       </div>
       <div class="post-drug-foot"><strong>5 mg IV/IO q15 min x 4, then PRN</strong><br>Alt: 0.05 mg/kg bolus → 0.1 mg/kg/hr pump</div>
     </div>
@@ -1245,12 +1283,34 @@
       <div class="conc-row"><div class="conc-drug">Ketamine</div><div>50 mg/mL</div><div>1 mg/kg</div><div>200 mg</div></div>
       <div class="conc-row"><div class="conc-drug">Rocuronium</div><div>10 mg/mL</div><div>1.5 mg/kg</div><div>300 mg</div></div>
       <div class="conc-row"><div class="conc-drug">Etomidate</div><div>2 mg/mL</div><div>0.3 mg/kg</div><div>60 mg</div></div>
-      <div class="conc-row"><div class="conc-drug">Succinylcholine</div><div>20 mg/mL</div><div>1.5 mg/kg</div><div>300 mg</div></div>
+      <div class="conc-row"><div class="conc-drug">SUX</div><div>20 mg/mL</div><div>1.5 mg/kg</div><div>300 mg</div></div>
       <div class="conc-row"><div class="conc-drug">Fentanyl</div><div>50 mcg/mL</div><div>1 mcg/kg</div><div>100 mcg</div></div>
       <div class="conc-row"><div class="conc-drug">Midazolam</div><div>1 mg/mL<br><span class="conc-sub">(5 mg / 5 mL)</span></div><div>5 mg post<br>0.1 mg/kg peds</div><div>—</div></div>
     </div>
     <div class="admin-foot">If your agency stocks a different concentration (e.g. Midazolam 5 mg/mL), the mL volumes in this app will be wrong. Confirm before administration.</div>
+    <div class="admin-contact">Questions, comments, concerns — contact<br><a href="mailto:d.boyce@northcountryems.org">d.boyce@northcountryems.org</a></div>
     <div class="spacer-lg"></div>
+  </div>
+</div>
+
+<!-- MAX-DOSE CONFIRM -->
+<div id="maxdose-modal" class="red-popup-overlay">
+  <div class="red-popup-box" onclick="event.stopPropagation()">
+    <strong>⚠ MAX DOSE</strong>
+    <span id="maxdose-text">You may have met the maximum dosage.</span>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px;">
+      <button class="maxdose-btn give" onclick="maxDoseProceed()">GIVE DOSE ANYWAY</button>
+      <button class="maxdose-btn back" onclick="maxDoseCancel()">RETURN TO LAST PAGE</button>
+    </div>
+  </div>
+</div>
+
+<!-- RED POPUP (Midazolam concentration warning) -->
+<div id="red-popup" class="red-popup-overlay" onclick="closeRedPopup()">
+  <div class="red-popup-box">
+    <strong>⚠ WARNING</strong>
+    This protocol is based off of <strong style="display:inline;font-size:16px;margin:0;">5 mg per 5 mL</strong> (1 mg/mL). Verify your agency's concentration before drawing up — other agencies may stock different.
+    <div class="red-popup-tap">Tap anywhere to close</div>
   </div>
 </div>
 
@@ -1302,22 +1362,41 @@
     return h + ':' + m;
   }
 
-  // Max-dose warning on repeat dosing (per 2026 protocol)
+  // Max-dose warning — shown ONCE per drug family per session.
   function getDrugMax(name) {
-    if (name.indexOf('Ketamine') === 0)        return { drug: 'Ketamine', max: '200 mg' };
-    if (name.indexOf('Rocuronium') === 0)      return { drug: 'Rocuronium', max: '300 mg' };
-    if (name.indexOf('Etomidate') === 0)       return { drug: 'Etomidate', max: '60 mg' };
-    if (name.indexOf('Succinylcholine') === 0) return { drug: 'Succinylcholine', max: '300 mg' };
-    if (name.indexOf('Midazolam') === 0)       return { drug: 'Midazolam', max: '5 mg per dose (q15 min × 4, then PRN)' };
+    if (name.indexOf('Ketamine') === 0)        return { drug: 'Ketamine', max: '200 mg', fam: 'ket' };
+    if (name.indexOf('Rocuronium') === 0)      return { drug: 'Rocuronium', max: '300 mg', fam: 'roc' };
+    if (name.indexOf('Etomidate') === 0)       return { drug: 'Etomidate', max: '60 mg', fam: 'eto' };
+    if (name.indexOf('Succinylcholine') === 0) return { drug: 'SUX', max: '300 mg', fam: 'sux' };
+    if (name.indexOf('Midazolam') === 0)       return { drug: 'Midazolam', max: '5 mg per dose (q15 min × 4, then PRN)', fam: 'midaz' };
     return null;
   }
-  // Returns true if OK to proceed, false if the medic cancels.
-  function maxDoseOk(key, drugName) {
+  let maxDoseAcked = {};   // drug families the medic has already acknowledged this session
+  let pendingGive = null;  // function to run if they choose "Give Dose Anyway"
+
+  // Returns true to proceed now, or false if a warning modal was shown (action deferred to the buttons).
+  function maxDoseGate(key, drugName, proceedFn) {
     const alreadyGiven = medsGiven.filter(m => m.key === key).length;
-    if (alreadyGiven < 1) return true; // first dose is capped at max, no warning
+    if (alreadyGiven < 1) return true;          // first dose is capped at max — no warning
     const info = getDrugMax(drugName);
     if (!info) return true;
-    return confirm('⚠ You may have met the maximum dosage for ' + info.drug + '.\n\nProtocol max: ' + info.max + '. The first dose may have already reached it.\n\nGive another dose anyway?');
+    if (maxDoseAcked[info.fam]) return true;     // already warned once for this drug — don't nag again
+    // Show the custom modal; defer the actual give to the buttons
+    pendingGive = function() { maxDoseAcked[info.fam] = true; proceedFn(); };
+    document.getElementById('maxdose-text').textContent =
+      'You may have met the maximum dosage for ' + info.drug + '. Protocol max: ' + info.max + '.';
+    document.getElementById('maxdose-modal').classList.add('show');
+    return false;
+  }
+
+  function maxDoseProceed() {
+    document.getElementById('maxdose-modal').classList.remove('show');
+    const fn = pendingGive; pendingGive = null;
+    if (fn) fn();
+  }
+  function maxDoseCancel() {
+    document.getElementById('maxdose-modal').classList.remove('show');
+    pendingGive = null;
   }
 
   function giveMed(key, drugName, mlElId, mgElId) {
@@ -1327,8 +1406,8 @@
     const ml = mlEl.textContent;
     const mg = mgEl.textContent;
     if (!ml || ml === '0' || ml === '') return;
-    if (!maxDoseOk(key, drugName)) return;
-    recordMed(key, drugName, ml + ' mL', mg);
+    const doIt = function() { recordMed(key, drugName, ml + ' mL', mg); };
+    if (maxDoseGate(key, drugName, doIt)) doIt();
   }
 
   function givePostMed(key, drugName, mlElId, mgElId) {
@@ -1338,20 +1417,20 @@
     const ml = mlEl.textContent;
     const mg = mgEl.textContent;
     if (!ml || ml === '0' || ml === '') return;
-    if (!maxDoseOk(key, drugName)) return;
-    recordMed(key, drugName, ml + ' mL', mg);
-    startRedose(key);
+    const doIt = function() { recordMed(key, drugName, ml + ' mL', mg); startRedose(key); };
+    if (maxDoseGate(key, drugName, doIt)) doIt();
   }
 
   function giveStaticMed(key, drugName, dose) {
-    if (!maxDoseOk(key, drugName)) return;
-    recordMed(key, drugName, dose, '');
-    startRedose(key);
+    const doIt = function() { recordMed(key, drugName, dose, ''); startRedose(key); };
+    if (maxDoseGate(key, drugName, doIt)) doIt();
   }
 
-  function toggleMidazWarn() {
-    const w = document.getElementById('midaz-warn');
-    if (w) w.style.display = (w.style.display === 'none' || !w.style.display) ? 'block' : 'none';
+  function openRedPopup() {
+    document.getElementById('red-popup').classList.add('show');
+  }
+  function closeRedPopup() {
+    document.getElementById('red-popup').classList.remove('show');
   }
 
   function recordMed(key, drugName, doseStr, mgStr) {
@@ -1481,6 +1560,7 @@
     document.querySelectorAll('.big-card.given, .post-drug-card.given, .single-big-card.given').forEach(c => c.classList.remove('given'));
     document.querySelectorAll('.given-stamp, .post-given-stamp').forEach(s => s.style.display = 'none');
     clearAllRedose();
+    maxDoseAcked = {};
     updateMedsCount();
     hideMedsLog();
   }
@@ -1547,8 +1627,8 @@
   function scrollToDsiTimer() {
     setTimeout(() => {
       const el = document.getElementById('dsi-timer-section');
-      if (el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
-    }, 150);
+      if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }, 200);
   }
   function scrollToCrashDoses() {
     setTimeout(() => {
@@ -1565,8 +1645,8 @@
   function scrollToPedsTimer() {
     setTimeout(() => {
       const el = document.getElementById('peds-timer-section');
-      if (el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
-    }, 150);
+      if (el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }, 200);
   }
 
   // DSI TIMER
