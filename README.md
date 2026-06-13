@@ -2,7 +2,7 @@
 
 Field airway management reference for North Country EMS / Clark Fire District 13 paramedics. Single-file web app — no build step, no dependencies, hosted on GitHub Pages.
 
-**Current version: v2.1**
+**Current version: v2.2**
 
 ## Links
 
@@ -31,18 +31,19 @@ Field airway management reference for North Country EMS / Clark Fire District 13
 - **Adult Crash Airway** — weight dosing, failure path, DOPE
 - **Peds RSI** — Broselow color-coded ages or length sizing, full dosing, integrated Target Vital Signs + timer
 - **Post-Intubation** — Fentanyl / Ketamine / Midazolam with re-dose reminder timers
-- **Concentrations (Admin)** — tap the version button on the splash to verify drug concentrations
+- **Concentrations (Admin)** — tap the version button on the splash to verify drug concentrations + contact info
 
 ## Key features
 
 - Weight dosing in **kg (default)** or lbs with quick presets; doses in mL (large, inline) and mg.
+- Switching units keeps the entered number (re-label without retyping).
 - Ketamine + Rocuronium marked preferred (red-bordered column).
-- Tap a med card to log it **GIVEN** with timestamp; multi-dose supported; running count.
-- **Meds Given log** (pill button top-right) — per-dose timestamps, delete a single dose with its **x** button, or **Clear All** (confirms, then closes).
-- **Max-dose warning** — repeat-dosing Ketamine, Rocuronium, Etomidate, Succinylcholine, or Midazolam prompts a confirm showing the protocol max (catches accidental double-taps).
-- **Post-intubation re-dose timers** — Fentanyl 5 min, Ketamine 15 min, Midazolam 15 min; card blinks red when due.
-- **3-minute timer met** now blinks a green “3 MIN MET — PROCEED” notice (DSI + Peds).
-- **1-hour session reset** to the warning page; clears the prior call’s meds and timers.
+- Tap a med card to log it **GIVEN** with timestamp; multi-dose; running count.
+- **Meds Given log** — per-dose timestamps, delete one dose with its x, or Clear All (confirms, then closes).
+- **Max-dose warning** (Ketamine/Rocuronium/Etomidate/SUX/Midazolam) — shows ONCE per drug, “Give Dose Anyway” / “Return to Last Page.”
+- **Post-intubation re-dose timers** — Fentanyl 5 min, Ketamine 15 min, Midazolam 15 min; blinks when due.
+- **3-minute timer met** blinks a “3 MIN MET — PROCEED” notice (DSI + Peds).
+- **1-hour session reset** to the warning page; clears prior call’s meds and timers.
 - Disclaimer / warning page on first load and each session.
 - iPad-optimized large fonts, high-contrast Target Vital Signs buttons, SF Mono numbers.
 
@@ -52,19 +53,22 @@ Tap anywhere on the splash background 5 times quickly -> a Bigfoot strides acros
 
 ## Changelog
 
+### v2.2
+
+- **Concentrations page:** added a “Questions, comments, concerns — contact” note with an email link to [d.boyce@northcountryems.org](mailto:d.boyce@northcountryems.org).
+- **Concentrations table:** Succinylcholine shortened to **SUX** so columns line up; matching table font.
+- **Consistent scroll anchors:** weight-entry auto-scroll and vital-sign-timer-met scroll now use the same anchor/behavior (block:start, 200 ms).
+- **Max-dose warning:** now shows only **once per drug** per call. Reworded buttons: **Give Dose Anyway** / **Return to Last Page** (replaces the OS confirm box).
+- **Midazolam “?”:** now opens a **red popup box** that closes when you tap anywhere (replaces the inline note).
+- (Pending) Bigfoot easter egg upgrade — still the custom SVG; swapping to a better animation when a suitable file is available.
+
 ### v2.1
 
-- **Concentrations admin page** — version button on the splash opens a read-only concentration/dose/max table for verification.
-- **Max-dose warning** on repeat dosing (Ketamine 200 mg, Rocuronium 300 mg, Etomidate 60 mg, Succinylcholine 300 mg, Midazolam 5 mg/dose) — confirm popup, can still proceed.
-- **Meds Given:** delete a single dose with its **x** button; **Clear All** now confirms then closes the log.
-- **Midazolam (post):** now shows “Concentration: 1 mg/mL” with a **?** button that reveals the 5 mg / 5 mL protocol warning (was always-on before).
-- **Default unit is now kg** on all weight screens (presets show kg).
-- **Switching units keeps the entered number** instead of clearing it (re-label/correct a unit without retyping).
-- **3-minute timer met** gives a blinking notice, matching the post-intubation re-dose style.
+- Concentrations admin page, max-dose warning, single-dose delete in Meds Given, Midazolam concentration “?” toggle, default unit kg, unit-switch keeps number, 3-minute timer-met blink.
 
 ### v2.0
 
-- Version checkpoint rolling up v1.6-v1.9: clickable/multi-dose med cards, Meds Given log, Target Vital Signs high-contrast buttons + auto-scroll, peds DSI integration, disclaimer page, DOPE boxes, walking Bigfoot, 1-hour reset, post-intubation re-dose timers, Midazolam concentration warning, SF Mono font.
+- Version checkpoint rolling up v1.6-v1.9: clickable/multi-dose med cards, Meds Given log, Target Vital Signs buttons + auto-scroll, peds DSI integration, disclaimer page, DOPE boxes, walking Bigfoot, 1-hour reset, post-intubation re-dose timers, Midazolam warning, SF Mono font.
 
 ## Protocol basis
 
