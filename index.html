@@ -43,7 +43,7 @@
   .splash-btn.post { background: linear-gradient(135deg, #1C3A1C 0%, #2E6B2E 100%); box-shadow: 0 6px 24px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); }
   .splash-btn.peds { background: linear-gradient(135deg, #1C3A55 0%, #4A7CB0 100%); box-shadow: 0 6px 24px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); }
   .splash-btn-title { position: relative; z-index: 1; font-size: clamp(28px, 7vw, 36px); font-weight: 800; color: #fff; text-align: center; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.1; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
-  .splash-version { margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.3); font-family: 'SF Mono', ui-monospace, 'Cascadia Code', 'Menlo', monospace; letter-spacing: 2px; }
+  .splash-version { margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.3); font-family: 'SF Mono', ui-monospace, 'Cascadia Code', 'Menlo', monospace; letter-spacing: 2px; cursor: pointer; padding: 12px 24px; -webkit-tap-highlight-color: transparent; }
 
   /* VIEW + HEADER + MEDS LOG BUTTON */
   .view { display: none; min-height: 100vh; flex-direction: column; }
@@ -476,7 +476,7 @@
     left: -180px;
     z-index: 9999;
     pointer-events: none;
-    animation: squatchWalk 4.5s linear forwards;
+    animation: squatchWalk 3s linear forwards;
   }
   @keyframes squatchWalk {
     0%   { left: -180px; }
@@ -538,16 +538,14 @@
   </div>
 </div>
 <!-- SPLASH -->
-<div id="splash">
-  <!-- Invisible tap zone over the logo backdrop -->
-  <div class="logo-tap-zone" onclick="logoTap()" id="logo-tap-zone"></div>
+<div id="splash" onclick="logoTap()">
   <div class="splash-logo">NCEMS · Clark County</div>
   <div class="splash-title">Intubation<br>Guide</div>
   <div class="splash-cards">
-    <button class="splash-btn dsi" onclick="showView('dsi')"><div class="splash-btn-title">DSI</div></button>
-    <button class="splash-btn crash" onclick="showView('crash')"><div class="splash-btn-title">Adult Crash Airway</div></button>
-    <button class="splash-btn peds" onclick="showView('peds')"><div class="splash-btn-title">Peds RSI</div></button>
-    <button class="splash-btn post" onclick="showView('post')"><div class="splash-btn-title">Post-Intubation</div></button>
+    <button class="splash-btn dsi" onclick="event.stopPropagation();showView('dsi')"><div class="splash-btn-title">DSI</div></button>
+    <button class="splash-btn crash" onclick="event.stopPropagation();showView('crash')"><div class="splash-btn-title">Adult Crash Airway</div></button>
+    <button class="splash-btn peds" onclick="event.stopPropagation();showView('peds')"><div class="splash-btn-title">Peds RSI</div></button>
+    <button class="splash-btn post" onclick="event.stopPropagation();showView('post')"><div class="splash-btn-title">Post-Intubation</div></button>
   </div>
   <div class="splash-version">v1.9</div>
 </div>
@@ -1113,7 +1111,7 @@
         <div class="redose-badge" id="redose-post-midaz" style="display:none;"><span class="redose-label">Re-dose timer</span><span id="redose-post-midaz-time">15:00</span></div>
       </div>
       <div class="midaz-conc-note">
-        <strong>⚠ VERIFY CONCENTRATION:</strong> 5 mg @ 1 mg/mL = <strong>5 mL</strong> · 5 mg @ 5 mg/mL = <strong>1 mL</strong>
+        <strong>⚠ WARNING:</strong> This protocol is based off of <strong>5 mg per 5 mL</strong> (1 mg/mL). Verify your agency's concentration before drawing up — other agencies may stock different.
       </div>
       <div class="post-drug-foot"><strong>5 mg IV/IO q15 min x 4, then PRN</strong><br>Alt: 0.05 mg/kg bolus → 0.1 mg/kg/hr pump</div>
     </div>
@@ -1815,7 +1813,7 @@
     hintEl.className = 'squatch-tap-hint';
     hintEl.textContent = '🌲 Sighting reported in Clark County 🌲';
     document.body.appendChild(hintEl);
-    setTimeout(() => { if (hintEl.parentNode) hintEl.remove(); }, 3500);
+    setTimeout(() => { if (hintEl.parentNode) hintEl.remove(); }, 3000);
 
     // Sasquatch SVG silhouette
     const wrap = document.createElement('div');
@@ -1862,18 +1860,51 @@
         <path d="M 95 88 Q 102 98 105 110" stroke="#2a2a15" stroke-width="2" fill="none" opacity="0.5"/>
       </svg>`;
     document.body.appendChild(wrap);
-    // Clean up after animation
-    setTimeout(() => { if (wrap.parentNode) wrap.remove(); }, 5000);
+    // Clean up after the 3-second walk completes
+    setTimeout(() => { if (wrap.parentNode) wrap.remove(); }, 3200);
   }
 
-  // DISCLAIMER
+  // DISCLAIMER + 1-HOUR SESSION RESET
+  // After 1 hour from accepting, the whole app resets to the warning page
+  // and clears the meds/timers from the prior call.
+  const SESSION_MS = 60 * 60 * 1000; // 1 hour
+
   function acceptDisclaimer() {
-    try { localStorage.setItem('disclaimerAccepted', '2026.06'); } catch(e) {}
+    try {
+      localStorage.setItem('disclaimerAccepted', '2026.06');
+      localStorage.setItem('sessionStart', String(Date.now()));
+    } catch(e) {}
     document.getElementById('disclaimer-modal').style.display = 'none';
   }
-  if (localStorage.getItem('disclaimerAccepted') !== '2026.06') {
-    document.getElementById('disclaimer-modal').style.display = 'flex';
+
+  function sessionExpired() {
+    const start = parseInt(localStorage.getItem('sessionStart') || '0', 10);
+    if (!start) return true;
+    return (Date.now() - start) > SESSION_MS;
   }
+
+  function checkSession() {
+    if (localStorage.getItem('disclaimerAccepted') !== '2026.06' || sessionExpired()) {
+      // Fresh start: clear prior call data + show warning page
+      try { localStorage.setItem('medsGiven', '[]'); } catch(e) {}
+      medsGiven = [];
+      clearAllRedose();
+      document.querySelectorAll('.big-card.given, .post-drug-card.given, .single-big-card.given').forEach(c => c.classList.remove('given'));
+      document.querySelectorAll('.given-stamp, .post-given-stamp').forEach(s => s.style.display = 'none');
+      updateMedsCount();
+      showSplash();
+      document.getElementById('disclaimer-modal').style.display = 'flex';
+    }
+  }
+
+  // Check on load
+  checkSession();
+  // Check again whenever the app is brought back to the foreground (iOS PWA)
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) checkSession();
+  });
+  // And every minute while open
+  setInterval(checkSession, 60 * 1000);
 
   // INIT
   renderPedsAgeGrid();
