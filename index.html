@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>NCEMS Intubation Guide v1.8</title>
+<title>NCEMS Intubation Guide v1.9</title>
 <style>
   :root {
     --g-deep: #1C3A1C;
@@ -422,6 +422,42 @@
     .dope-title { font-size: 16px; }
     .dope-grid { grid-template-columns: 60px 1fr; gap: 10px 14px; }
   }
+  /* POST-INT RE-DOSE TIMER */
+  .redose-badge {
+    margin-top: 12px;
+    display: inline-block;
+    background: var(--g-deep);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'SF Mono', ui-monospace, 'Menlo', monospace;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .redose-badge .redose-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .post-drug-card.redose-due {
+    animation: redoseBlink 1s ease-in-out infinite;
+  }
+  @keyframes redoseBlink {
+    0%, 100% { background: #fff; border-color: var(--bad); }
+    50%      { background: #ffe0e0; border-color: var(--bad-deep); }
+  }
+  .post-drug-card.redose-due .redose-badge {
+    background: var(--bad);
+    animation: redoseBadgePulse 1s ease-in-out infinite;
+  }
+  @keyframes redoseBadgePulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+  }
+
   /* SASQUATCH EASTER EGG */
   .logo-tap-zone {
     position: absolute;
@@ -513,7 +549,7 @@
     <button class="splash-btn peds" onclick="showView('peds')"><div class="splash-btn-title">Peds RSI</div></button>
     <button class="splash-btn post" onclick="showView('post')"><div class="splash-btn-title">Post-Intubation</div></button>
   </div>
-  <div class="splash-version">v1.8</div>
+  <div class="splash-version">v1.9</div>
 </div>
 
 <!-- DSI -->
@@ -1051,6 +1087,7 @@
           <div class="post-ml-row"><span class="post-ml-huge" id="post-fen-ml">0</span><span class="post-ml-unit-inline">mL</span></div>
           <div class="post-mg-line"><span id="post-fen-mcg">0 mcg</span><span id="post-fen-max" style="display:none;" class="post-max-tag">MAX 100 mcg</span></div>
           <div class="post-given-stamp" id="given-post-fen" style="display:none;">✓ GIVEN <span id="given-post-fen-time">--:--</span></div>
+          <div class="redose-badge" id="redose-post-fen" style="display:none;"><span class="redose-label">Re-dose timer</span><span id="redose-post-fen-time">5:00</span></div>
         </div>
         <div class="post-drug-foot">1 mcg/kg · 50 mcg/mL · <strong>q5-10 min PRN x 1 hr</strong></div>
       </div>
@@ -1061,6 +1098,7 @@
           <div class="post-ml-row"><span class="post-ml-huge ket-color" id="post-ket-ml">0</span><span class="post-ml-unit-inline">mL</span></div>
           <div class="post-mg-line"><span id="post-ket-mg">0 mg</span><span id="post-ket-max" style="display:none;" class="post-max-tag">MAX 200 mg</span></div>
           <div class="post-given-stamp" id="given-post-ket" style="display:none;">✓ GIVEN <span id="given-post-ket-time">--:--</span></div>
+          <div class="redose-badge" id="redose-post-ket" style="display:none;"><span class="redose-label">Re-dose timer</span><span id="redose-post-ket-time">15:00</span></div>
         </div>
         <div class="post-drug-foot">1 mg/kg slow push · 50 mg/mL · <strong>q15 min PRN</strong></div>
       </div>
@@ -1072,6 +1110,7 @@
         <div class="post-ml-row"><span class="post-ml-huge midaz-color">5</span><span class="post-ml-unit-inline">mg</span></div>
         <div class="post-mg-line" id="post-midaz-bolus" style="font-size: 15px; color: var(--text-muted);">Weight-based bolus alt: <span id="post-midaz-wt">0 mg</span></div>
         <div class="post-given-stamp" id="given-post-midaz" style="display:none;">✓ GIVEN <span id="given-post-midaz-time">--:--</span></div>
+        <div class="redose-badge" id="redose-post-midaz" style="display:none;"><span class="redose-label">Re-dose timer</span><span id="redose-post-midaz-time">15:00</span></div>
       </div>
       <div class="midaz-conc-note">
         <strong>⚠ VERIFY CONCENTRATION:</strong> 5 mg @ 1 mg/mL = <strong>5 mL</strong> · 5 mg @ 5 mg/mL = <strong>1 mL</strong>
@@ -1189,10 +1228,12 @@
     const mg = mgEl.textContent;
     if (!ml || ml === '0' || ml === '') return;
     recordMed(key, drugName, ml + ' mL', mg);
+    startRedose(key);
   }
 
   function giveStaticMed(key, drugName, dose) {
     recordMed(key, drugName, dose, '');
+    startRedose(key);
   }
 
   function recordMed(key, drugName, doseStr, mgStr) {
@@ -1201,6 +1242,53 @@
     try { localStorage.setItem('medsGiven', JSON.stringify(medsGiven)); } catch(e) {}
     markCardGiven(key, timeStr);
     updateMedsCount();
+  }
+
+  // ===== POST-INT RE-DOSE TIMERS =====
+  // Protocol intervals: Fentanyl q5-10 min (timer at 5), Ketamine q15, Midazolam q15
+  const redoseSeconds = { 'post-fen': 300, 'post-ket': 900, 'post-midaz': 900 };
+  const redoseTimers = {};
+
+  function startRedose(key) {
+    if (!(key in redoseSeconds)) return;
+    // Clear existing timer for this med (re-dosing resets the clock)
+    if (redoseTimers[key]) clearInterval(redoseTimers[key].interval);
+    const card = document.getElementById('card-' + key);
+    const badge = document.getElementById('redose-' + key);
+    const timeEl = document.getElementById('redose-' + key + '-time');
+    if (!badge || !timeEl) return;
+    if (card) card.classList.remove('redose-due');
+    badge.style.display = 'inline-block';
+    let remaining = redoseSeconds[key];
+    timeEl.textContent = fmtRedose(remaining);
+    redoseTimers[key] = {
+      interval: setInterval(() => {
+        remaining--;
+        if (remaining <= 0) {
+          clearInterval(redoseTimers[key].interval);
+          timeEl.textContent = 'RE-DOSE';
+          if (card) card.classList.add('redose-due');
+        } else {
+          timeEl.textContent = fmtRedose(remaining);
+        }
+      }, 1000)
+    };
+  }
+
+  function fmtRedose(sec) {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function clearAllRedose() {
+    Object.keys(redoseTimers).forEach(k => {
+      if (redoseTimers[k]) clearInterval(redoseTimers[k].interval);
+      const card = document.getElementById('card-' + k);
+      const badge = document.getElementById('redose-' + k);
+      if (card) card.classList.remove('redose-due');
+      if (badge) badge.style.display = 'none';
+    });
   }
 
   function markCardGiven(key, timeStr) {
@@ -1249,6 +1337,7 @@
     try { localStorage.setItem('medsGiven', '[]'); } catch(e) {}
     document.querySelectorAll('.big-card.given, .post-drug-card.given, .single-big-card.given').forEach(c => c.classList.remove('given'));
     document.querySelectorAll('.given-stamp, .post-given-stamp').forEach(s => s.style.display = 'none');
+    clearAllRedose();
     updateMedsCount();
     showMedsLog();
   }
